@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tópico 10: Limitações do Full Costing & Transição para o ABC | Gestão de Custos - CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--background); color: var(--text-primary); line-height: 1.6; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: var(--secondary); }
+
+        .slide-container {
+            margin: 2rem auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            min-height: 520px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header { margin-bottom: 1.75rem; border-bottom: 2px solid var(--secondary-light); padding-bottom: 1rem; }
+        .slide-tag { color: var(--secondary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .slide-title { font-size: 1.85rem; color: var(--primary); font-weight: 800; margin-top: 0.25rem; }
+        
+        .slide-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.75; }
+        .slide-body p { margin-bottom: 1.25rem; }
+        .slide-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .slide-body li { margin-bottom: 0.5rem; }
+
+        .highlight-box {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover:not(:disabled) { background: var(--secondary); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .slide-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-header">
+            <a href="index.html" class="back-link">&larr; Voltar ao Menu da Aula 03</a>
+            <div style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">
+                Tópico 10: Limitações do Full Costing & Transição para o ABC
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="slide-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 01 de 10 • Balanço Crítico</span>
+                    <h2 class="slide-title">O Custeio por Absorção Sob Auditoria Gerencial</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Ao longo da Aula 03, vimos que o <strong>Custeio por Absorção</strong> cumpre com rigor os requisitos fiscais e societários (Lei 6.404/76 e CPC 16).</p>
+                    <p>No entanto, para o Administrador focado em estratégia e tomada de decisão de curto prazo, o método tradicional impõe barreiras analíticas substanciais.</p>
+                    <div class="highlight-box">
+                        Um método excelente para prestação de contas externa ao Fisco e acionistas pode ser inadequado quando utilizado isoladamente para precificação e cortes de linha.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 02 de 10 • Limitação 1</span>
+                    <h2 class="slide-title">A Arbitrariedade Inerente ao Rateio</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Mesmo com múltiplos centros de custos, a escolha final da base de rateio carrega certa subjetividade:</p>
+                    <ul>
+                        <li>Por que alocar o seguro fabril por m² e não pelo valor venal dos equipamentos instalados?</li>
+                        <li>Por que ratear o refeitório por número de funcionários se certos turnos realizam mais refeições pesadas?</li>
+                    </ul>
+                    <p>Pequenas alterações de percentual no rateio secundário podem transformar um produto considerado lucrativo em deficitário apenas no papel.</p>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 03 de 10 • Limitação 2</span>
+                    <h2 class="slide-title">A Armadilha de Descontinuar Produtos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Considere uma linha de produtos que apresenta prejuízo após receber rateios de aluguel e gerência:</p>
+                    <div class="highlight-box">
+                        Se o gestor eliminar o produto com base no custo por absorção, <strong>os custos fixos rateados não desaparecem</strong>!
+                    </div>
+                    <ul>
+                        <li>O aluguel da fábrica continuará no mesmo valor;</li>
+                        <li>Esse custo fixo será redistribuído aos produtos restantes;</li>
+                        <li>Os produtos sobreviventes ficarão mais caros na planilha contábil e poderão parecer deficitários no próximo mês.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 04 de 10 • Limitação 3</span>
+                    <h2 class="slide-title">Invisibilidade dos Custos Não Produtivos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O Custeio por Absorção foca exclusivamente nos portões da fábrica:</p>
+                    <ul>
+                        <li>As <strong>despesas comerciais e administrativas</strong> são excluídas do produto e jogadas em bloco na DRE;</li>
+                        <li>Entretanto, clientes exigentes consomem mais horas de SAC, demandam fretes fracionados ou canais especiais de distribuição;</li>
+                        <li>O método tradicional trata todos os clientes da mesma forma, sem revelar quanto cada um realmente custa para a organização.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 05 de 10 • Emergência de Novos Métodos</span>
+                    <h2 class="slide-title">A Necessidade de Novas Abordagens</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Para contornar as falhas gerenciais do Full Costing, a contabilidade desenvolveu duas ramificações complementares:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Novo Método</th>
+                                <th>Objetivo Principal</th>
+                                <th>Foco Pedagógico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Custeio Baseado em Atividades (ABC)</td>
+                                <td>Rastrear custos indiretos por meio de atividades e direcionadores de causa real.</td>
+                                <td>Próxima Aula (Aula 04)[cite: 1]</td>
+                            </tr>
+                            <tr>
+                                <td>Custeio Variável / Direto</td>
+                                <td>Isolar custos fixos e evidenciar a Margem de Contribuição real de curto prazo.</td>
+                                <td>Aulas 05 e 06[cite: 1]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 06 de 10 • Introdução ao ABC</span>
+                    <h2 class="slide-title">O que o ABC Faz de Diferente?</h2>
+                </div>
+                <div class="slide-body">
+                    <p>No Custeio Tradicional (Aula 03):</p>
+                    <div class="highlight-box">
+                        <strong>Recursos &rarr; Departamentos &rarr; Produtos</strong>
+                    </div>
+                    <p>No Custeio Baseado em Atividades - ABC (Aula 04)[cite: 1]:</p>
+                    <div class="highlight-box">
+                        <strong>Recursos &rarr; Atividades &rarr; Produtos / Clientes / Canais</strong>[cite: 1]
+                    </div>
+                    <p>Os produtos não consomem custos diretamente; os produtos consomem <strong>atividades</strong> (ajustar máquinas, comprar insumos, expedir pedidos), e as atividades é que consomem os recursos da firma[cite: 1].</p>
+                </div>
+            </div>
+
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 07 de 10 • O Conceito de Cost Drivers</span>
+                    <h2 class="slide-title">Direcionadores de Custos (Cost Drivers)</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Em vez de usar Horas-Máquina globais para ratear o Almoxarifado, o ABC identifica o que realmente gera trabalho[cite: 1]:</p>
+                    <ul>
+                        <li>Atividade de Compras &rarr; Direcionador: <strong>Número de Ordens de Compra emitidas</strong>;</li>
+                        <li>Atividade de Setup de Linha &rarr; Direcionador: <strong>Número de trocas de ferramentas</strong>;</li>
+                        <li>Atividade de Inspeção Técnica &rarr; Direcionador: <strong>Horas dedicadas a ensaios laboratoriais</strong>.</li>
+                    </ul>
+                    <p>Produtos customizados que demandam muitos setups passam a assumir seus custos reais.</p>
+                </div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 08 de 10 • Convivência Harmônica</span>
+                    <h2 class="slide-title">Dualidade Contábil: Legal vs. Gerencial</h2>
+                </div>
+                <div class="slide-body">
+                    <p>A organização moderna não precisa escolher apenas um método para todas as finalidades:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Dimensão Legal / Externa</th>
+                                <th>Dimensão Decisorial / Interna</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mantém o <strong>Custeio por Absorção</strong> integrado aos livros contábeis fiscais (SPED Contábil e Fiscal).</td>
+                                <td>Gera relatórios complementares via <strong>Custeio Variável</strong> e <strong>ABC</strong> no BI/ERP para os gestores.</td>
+                            </tr>
+                            <tr>
+                                <td>Cumpre a Lei nº 6.404/76 e o RIR/2018.</td>
+                                <td>Suporta decisões de formação de preços, cortes de custos e negociações de vendas.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 09 de 10 • Mapa de Fixação da Aula</span>
+                    <h2 class="slide-title">Mapa Mental da Aula 03</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Estrutura integrada percorrida:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li><strong>Mecânica:</strong> MP + MOD + CIF apropriados aos estoques de produtos.</li>
+                        <li><strong>Legislação:</strong> Exigido pelo CPC 16 e Regulamento do IR (proibição de despesas no estoque).</li>
+                        <li><strong>Rateios Tradicionais:</strong> Horas-Máquina, Horas-MOD e bases proporcionais[cite: 1].</li>
+                        <li><strong>Departamentalização:</strong> Centros de Apoio repassam aos Produtivos (Secundário), e os Produtivos repassam aos bens (Terciário)[cite: 1].</li>
+                        <li><strong>Atenção:</strong> Variações de volume transferem custos fixos para o balanço patrimonial.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 10 de 10 • Fechamento da Trilha Teórica</span>
+                    <h2 class="slide-title">Conclusão dos Slides & Próximas Atividades</h2>
+                </div>
+                <div class="slide-body">
+                    <div class="highlight-box">
+                        Parabéns! Você concluiu a trilha temática de slides da Aula 03.
+                    </div>
+                    <p>Agora você está pronto para aplicar os cálculos e critérios de rateio nos casos práticos propostos:</p>
+                    <ul>
+                        <li>Resolva as questões de fixação analítica e cálculos departamentais;</li>
+                        <li>Consulte a folha de atividades práticas e o gabarito comentado para validar seu aprendizado.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Controles de Navegação -->
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&larr; Anterior</button>
+                <div class="slide-count" id="slideIndicator">Slide 1 de 10</div>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">Próximo &rarr;</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === index) s.classList.add('active');
+            });
+            slideIndicator.textContent = `Slide ${index + 1} de ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>

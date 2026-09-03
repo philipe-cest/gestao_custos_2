@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Custos: Aula 03 | CEST Anil - Prof. Msc. Philipe Sampaio Lima</title>
+    <meta name="description" content="Ambiente de Slides e Roteiro Interativo da Aula 03 - Sistemas de Custeio e Métodos Tradicionais: Custeio por Absorção e Rateios - Curso de Administração do CEST.">
+    <meta name="author" content="Prof. Msc. Philipe Sampaio Lima">
+
+    <!-- Favicon Data URI -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --primary-light: #003399;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --accent: #00A3FF;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --border-focus: #0080FF;
+
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, Menlo, monospace;
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --shadow-sm: 0 1px 3px rgba(0, 32, 96, 0.05);
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --shadow-lg: 0 12px 30px -4px rgba(0, 32, 96, 0.12);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --max-width: 1200px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.15rem;
+        }
+
+        .brand-logo svg {
+            width: 38px;
+            height: 38px;
+        }
+
+        .brand-divider {
+            width: 1px;
+            height: 24px;
+            background-color: var(--border);
+        }
+
+        .brand-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        #hero {
+            padding: 4rem 0 3.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary-light);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 3.5vw, 2.7rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.88);
+            max-width: 760px;
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .meta-item {
+            font-size: 0.85rem;
+        }
+
+        .meta-label {
+            color: var(--secondary-light);
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-val {
+            font-weight: 700;
+            color: #FFFFFF;
+            font-size: 0.95rem;
+        }
+
+        section {
+            padding: 3.5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--secondary);
+            background-color: var(--secondary-light);
+            padding: 4px 12px;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 2.5vw, 2.1rem);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .topic-card {
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--secondary);
+        }
+
+        .topic-number {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topic-badge {
+            background: var(--secondary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+        }
+
+        .topic-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .topic-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .btn-topic {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            background-color: var(--primary);
+            color: #FFFFFF;
+            transition: var(--transition);
+        }
+
+        .btn-topic:hover {
+            background-color: var(--secondary);
+            color: #FFFFFF;
+        }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: #FFFFFF;
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.825rem;
+            color: rgba(255, 255, 255, 0.6);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="16" fill="#002060"/>
+                    <path d="M20 75 V30 L50 30 L50 75" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M50 30 L80 30 L80 75" stroke="#FFFFFF" stroke-width="8" stroke-linejoin="round"/>
+                    <path d="M30 52 H70" stroke="#0080FF" stroke-width="8"/>
+                </svg>
+                <span>CEST</span>
+                <span class="brand-divider"></span>
+                <span class="brand-sub">Gestão de Custos</span>
+            </a>
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+                Administração • 4º Período • Anil
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <div class="hero-badge">
+                    <span>Aula 03 • Sistemas Tradicionais de Custeio • 2h/aula</span>
+                </div>
+                <h1 class="hero-title">Custeio por Absorção, Conformidade Fiscal & Mecanismos de Rateio</h1>
+                <p class="hero-description">
+                    Portal de slides interativos da aula. Navegue pelos 10 módulos analíticos para dominar os fundamentos do Custeio por Absorção (Full Costing), requisitos fiscais (CPC 16 / RIR), organização por centros de custos e casos práticos de rateio.
+                </p>
+
+                <div class="hero-meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Instituição & Curso</span>
+                        <span class="meta-val">CEST • Bacharelado em Administração</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Docente</span>
+                        <span class="meta-val">Prof. Msc. Philipe Sampaio Lima</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Carga da Disciplina</span>
+                        <span class="meta-val">20 horas (Encontro 03)</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Foco da Aula</span>
+                        <span class="meta-val">Custeio por Absorção & Rateio Departamental</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="topicos">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Trilha de Aprendizagem</span>
+                    <h2 class="section-title">Navegação dos Tópicos da Aula</h2>
+                    <p class="section-description">Acesse abaixo qualquer um dos 10 módulos temáticos para iniciar as apresentações detalhadas em formato de slides dinâmicos.</p>
+                </div>
+
+                <div class="topics-grid">
+                    <!-- Tópico 1 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 01</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Conceito e Mecânica do Custeio por Absorção (Full Costing)</h3>
+                            <p class="topic-desc">Definição formal, premissa de agregação dos custos de fabricação (diretos e indiretos, fixos e variáveis) aos produtos e o ciclo operacional contábil.</p>
+                        </div>
+                        <a href="topico1.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 2 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 02</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Fundamentos Legais e Normas Societárias (CPC 16 / RIR)</h3>
+                            <p class="topic-desc">Obrigatoriedade do Custeio por Absorção para fins fiscais e balanços societários: Princípio da Realização da Receita, Confrontação e Legislação do IR.</p>
+                        </div>
+                        <a href="topico2.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 3 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 03</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">O Papel e o Desafio dos Custos Indiretos de Fabricação (CIF)</h3>
+                            <p class="topic-desc">A natureza não rastreável do CIF, o paradoxo da subjetividade e a necessidade de critérios técnicos de distribuição no ambiente produtivo moderno.</p>
+                        </div>
+                        <a href="topico3.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 4 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 04</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Critérios e Bases de Rateio Tradicionais</h3>
+                            <p class="topic-desc">Bases quantitativas clássicas: Horas-Máquina (H/M), Horas de Mão de Obra Direta (H/MOD), Custo Primário e Volume Físico. Impactos e riscos de distorção.</p>
+                        </div>
+                        <a href="topico4.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 5 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 05</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Centros de Custos: Produtivos e de Apoio (Serviços)</h3>
+                            <p class="topic-desc">Departamentalização contábil: segmentação fabril entre centros diretos (Usinagem, Montagem) e centros auxiliares (Manutenção, Caldeira, PCP, Almoxarifado).</p>
+                        </div>
+                        <a href="topico5.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 6 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 06</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Rateio Secundário: Redistribuição Interdepartamental</h3>
+                            <p class="topic-desc">Mecanismos de transferência de custos dos centros de serviços para os centros produtivos: método direto, em cascata (step-down) e recíproco.</p>
+                        </div>
+                        <a href="topico6.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 7 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 07</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Impacto da Variação de Volume na Avaliação de Estoques</h3>
+                            <p class="topic-desc">Como a flutuação do volume de produção afeta o custo unitário estocado e o lucro operacional por absorção: o fenômeno do custo fixo "represado" no estoque.</p>
+                        </div>
+                        <a href="topico7.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 8 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 08</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Estudo de Caso Industrial 1: Rateio Simples Multi-Produtos</h3>
+                            <p class="topic-desc">Resolução passo a passo de alocação de aluguel, supervisão e energia entre linhas de produtos a partir de horas-máquina e mão de obra direta.</p>
+                        </div>
+                        <a href="topico8.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 9 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 09</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Estudo de Caso Industrial 2: Matriz Departamental Completa</h3>
+                            <p class="topic-desc">Exercício aplicado estruturado: Rateio primário (geral para departamentos), secundário (apoio para produtivos) e terciário (centros para produtos finais).</p>
+                        </div>
+                        <a href="topico9.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+
+                    <!-- Tópico 10 -->
+                    <div class="topic-card">
+                        <div>
+                            <div class="topic-number">
+                                <span>Tópico 10</span>
+                                <span class="topic-badge">10 Slides</span>
+                            </div>
+                            <h3 class="topic-title">Limitações Gerenciais do Full Costing & Transição para o ABC</h3>
+                            <p class="topic-desc">Subsídio cruzado entre produtos, tomadas de decisão prejudicadas por rateios arbitrários e a ponte conceitual para o Custeio Baseado em Atividades (Aula 04).</p>
+                        </div>
+                        <a href="topico10.html" class="btn-topic">Acessar Slides &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <span>CEST — Centro Universitário Santa Terezinha • Unidade Anil • Curso de Administração</span>
+                <span>Prof. Msc. Philipe Sampaio Lima • Gestão de Custos</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

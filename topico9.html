@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tópico 09: Estudo de Caso 2: Matriz Departamental Completa | Gestão de Custos - CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--background); color: var(--text-primary); line-height: 1.6; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: var(--secondary); }
+
+        .slide-container {
+            margin: 2rem auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            min-height: 520px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header { margin-bottom: 1.75rem; border-bottom: 2px solid var(--secondary-light); padding-bottom: 1rem; }
+        .slide-tag { color: var(--secondary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .slide-title { font-size: 1.85rem; color: var(--primary); font-weight: 800; margin-top: 0.25rem; }
+        
+        .slide-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.75; }
+        .slide-body p { margin-bottom: 1.25rem; }
+        .slide-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .slide-body li { margin-bottom: 0.5rem; }
+
+        .highlight-box {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover:not(:disabled) { background: var(--secondary); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .slide-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-header">
+            <a href="index.html" class="back-link">&larr; Voltar ao Menu da Aula 03</a>
+            <div style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">
+                Tópico 09: Estudo de Caso 2: Matriz Departamental Completa
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="slide-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 01 de 10 • Cenário Industrial Integrado</span>
+                    <h2 class="slide-title">Caso Prático: Motores Delta S.A.</h2>
+                </div>
+                <div class="slide-body">
+                    <p>A <strong>Motores Delta S.A.</strong> fabrica dois modelos de bombas centrífugas: o modelo <strong>Delta-100</strong> e o <strong>Delta-200</strong>.</p>
+                    <p>A estrutura fabril conta com 4 departamentos estruturados:</p>
+                    <ul>
+                        <li><strong>Centro de Apoio (CCA):</strong> Manutenção Geral (MAN).</li>
+                        <li><strong>Centro de Apoio (CCA):</strong> Almoxarifado Central (ALM).</li>
+                        <li><strong>Centro Produtivo (CCP 1):</strong> Usinagem Pesada (USI).</li>
+                        <li><strong>Centro Produtivo (CCP 2):</strong> Montagem Final (MON).</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Objetivo: Aplicar o fluxo encadeado de Rateio Primário, Secundário e Terciário para encontrar o custo total de fabricação.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 02 de 10 • Custos Diretos</span>
+                    <h2 class="slide-title">Apuração Inicial dos Custos Diretos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Dados de produção do mês corrente:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Delta-100</th>
+                                <th>Delta-200</th>
+                                <th>Total Fabril</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Volume Produzido</td>
+                                <td>500 unidades</td>
+                                <td>1.000 unidades</td>
+                                <td>1.500 unidades</td>
+                            </tr>
+                            <tr>
+                                <td>Matéria-Prima Direta Total</td>
+                                <td>R$ 50.000</td>
+                                <td>R$ 70.000</td>
+                                <td>R$ 120.000</td>
+                            </tr>
+                            <tr>
+                                <td>MOD Usinagem</td>
+                                <td>R$ 20.000</td>
+                                <td>R$ 10.000</td>
+                                <td>R$ 30.000</td>
+                            </tr>
+                            <tr>
+                                <td>MOD Montagem</td>
+                                <td>R$ 15.000</td>
+                                <td>R$ 25.000</td>
+                                <td>R$ 40.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Custo Direto Consolidado</strong></td>
+                                <td><strong>R$ 85.000</strong></td>
+                                <td><strong>R$ 105.000</strong></td>
+                                <td><strong>R$ 190.000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 03 de 10 • Custos Indiretos Globais</span>
+                    <h2 class="slide-title">Etapa 1: Rateio Primário dos Custos Gerais</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Custos Indiretos Gerais a distribuir: <strong>Aluguel Fabril = R$ 40.000</strong> (rateado por m² de área ocupada) e <strong>Energia Global = R$ 30.000</strong> (rateada por kWh consumido):</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Centro</th>
+                                <th>Área (m²)</th>
+                                <th>Aluguel (R$)</th>
+                                <th>Consumo (kWh)</th>
+                                <th>Energia (R$)</th>
+                                <th>Total Primário</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ALM (Apoio)</td>
+                                <td>400 m² (20%)</td>
+                                <td>R$ 8.000</td>
+                                <td>1.000 kWh (10%)</td>
+                                <td>R$ 3.000</td>
+                                <td><strong>R$ 11.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td>MAN (Apoio)</td>
+                                <td>200 m² (10%)</td>
+                                <td>R$ 4.000</td>
+                                <td>2.000 kWh (20%)</td>
+                                <td>R$ 6.000</td>
+                                <td><strong>R$ 10.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td>USI (Produtivo)</td>
+                                <td>800 m² (40%)</td>
+                                <td>R$ 16.000</td>
+                                <td>5.000 kWh (50%)</td>
+                                <td>R$ 15.000</td>
+                                <td><strong>R$ 31.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td>MON (Produtivo)</td>
+                                <td>600 m² (30%)</td>
+                                <td>R$ 12.000</td>
+                                <td>2.000 kWh (20%)</td>
+                                <td>R$ 6.000</td>
+                                <td><strong>R$ 18.000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 04 de 10 • Rateio Secundário: ALM</span>
+                    <h2 class="slide-title">Etapa 2A: Fechamento do Almoxarifado</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O Almoxarifado acumulou R$ 11.000 no rateio primário. Seus serviços são medidos pelas <strong>Requisições de Materiais</strong> atendidas diretamente para a Usinagem e Montagem (Método Direto):</p>
+                    <ul>
+                        <li>Usinagem: 70 requisições (70%)</li>
+                        <li>Montagem: 30 requisições (30%)</li>
+                        <li>Total da base: 100 requisições</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Taxa ALM = R$ 11.000 / 100 req = R$ 110 por requisição.<br>
+                        &bull; <strong>USI recebe:</strong> 70 x R$ 110 = R$ 7.700<br>
+                        &bull; <strong>MON recebe:</strong> 30 x R$ 110 = R$ 3.300<br>
+                        &bull; Saldo do Almoxarifado = R$ 0,00.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 05 de 10 • Rateio Secundário: MAN</span>
+                    <h2 class="slide-title">Etapa 2B: Fechamento da Manutenção</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O Centro de Manutenção acumulou R$ 10.000 no rateio primário. Sua base de repasse são as <strong>Horas Técnicas de Manutenção</strong> prestadas às linhas produtivas:</p>
+                    <ul>
+                        <li>Usinagem: 160 horas (80% - maquinário pesado)</li>
+                        <li>Montagem: 40 horas (20% - bancadas leves)</li>
+                        <li>Total da base: 200 horas técnicas</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Taxa MAN = R$ 10.000 / 200 h = R$ 50 por hora técnica.<br>
+                        &bull; <strong>USI recebe:</strong> 160 h x R$ 50 = R$ 8.000<br>
+                        &bull; <strong>MON recebe:</strong> 40 h x R$ 50 = R$ 2.000<br>
+                        &bull; Saldo da Manutenção = R$ 0,00.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 06 de 10 • Consolidação Departamental</span>
+                    <h2 class="slide-title">Quadro Consolidado dos Centros Produtivos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Saldo final acumulado nos centros produtivos prontos para o rateio aos produtos:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Origem do Custo</th>
+                                <th>Usinagem (USI)</th>
+                                <th>Montagem (MON)</th>
+                                <th>Total Alocado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rateio Primário (Direto nos Centros)</td>
+                                <td>R$ 31.000</td>
+                                <td>R$ 18.000</td>
+                                <td>R$ 49.000</td>
+                            </tr>
+                            <tr>
+                                <td>Transferência ALM (Secundário)</td>
+                                <td>R$ 7.700</td>
+                                <td>R$ 3.300</td>
+                                <td>R$ 11.000</td>
+                            </tr>
+                            <tr>
+                                <td>Transferência MAN (Secundário)</td>
+                                <td>R$ 8.000</td>
+                                <td>R$ 2.000</td>
+                                <td>R$ 10.000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Acumulado Final</strong></td>
+                                <td><strong>R$ 46.700</strong></td>
+                                <td><strong>R$ 23.300</strong></td>
+                                <td><strong>R$ 70.000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 07 de 10 • Rateio Terciário: USI</span>
+                    <h2 class="slide-title">Etapa 3A: Alocação da Usinagem aos Produtos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O custo da Usinagem (R$ 46.700) é alocado com base em <strong>Horas-Máquina (H/M)</strong>:</p>
+                    <ul>
+                        <li>Delta-100: 500 un x 2 H/M = 1.000 H/M</li>
+                        <li>Delta-200: 1.000 un x 1 H/M = 1.000 H/M</li>
+                        <li>Total de Horas-Máquina = 2.000 H/M</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Taxa USI = R$ 46.700 / 2.000 H/M = R$ 23,35 por H/M.<br>
+                        &bull; <strong>Delta-100:</strong> 1.000 H/M x R$ 23,35 = R$ 23.350 (R$ 46,70/un)<br>
+                        &bull; <strong>Delta-200:</strong> 1.000 H/M x R$ 23,35 = R$ 23.350 (R$ 23,35/un)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 08 de 10 • Rateio Terciário: MON</span>
+                    <h2 class="slide-title">Etapa 3B: Alocação da Montagem aos Produtos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O custo da Montagem (R$ 23.300) é alocado com base em <strong>Horas de MOD</strong>:</p>
+                    <ul>
+                        <li>Delta-100: 500 un x 1 h = 500 h de MOD</li>
+                        <li>Delta-200: 1.000 un x 1,5 h = 1.500 h de MOD</li>
+                        <li>Total de Horas de MOD = 2.000 h</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Taxa MON = R$ 23.300 / 2.000 h = R$ 11,65 por hora de MOD.<br>
+                        &bull; <strong>Delta-100:</strong> 500 h x R$ 11,65 = R$ 5.825 (R$ 11,65/un)<br>
+                        &bull; <strong>Delta-200:</strong> 1.500 h x R$ 11,65 = R$ 17.475 (R$ 17,475/un)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 09 de 10 • Apuração do Custo Pleno Final</span>
+                    <h2 class="slide-title">Quadro Geral de Custos Unitários Finais</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Consolidação do Custeio por Absorção Pleno (Full Costing):</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Componente do Custo</th>
+                                <th>Delta-100 (500 un)</th>
+                                <th>Delta-200 (1.000 un)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Matéria-Prima Direta / un</td>
+                                <td>R$ 100,00</td>
+                                <td>R$ 70,00</td>
+                            </tr>
+                            <tr>
+                                <td>Mão de Obra Direta Total / un</td>
+                                <td>R$ 70,00</td>
+                                <td>R$ 35,00</td>
+                            </tr>
+                            <tr>
+                                <td>CIF Rateado - Usinagem / un</td>
+                                <td>R$ 46,70</td>
+                                <td>R$ 23,35</td>
+                            </tr>
+                            <tr>
+                                <td>CIF Rateado - Montagem / un</td>
+                                <td>R$ 11,65</td>
+                                <td>R$ 17,48</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Custo Total de Produção Unitário</strong></td>
+                                <td><strong>R$ 228,35</strong></td>
+                                <td><strong>R$ 145,83</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 10 de 10 • Síntese & Conexões</span>
+                    <h2 class="slide-title">Resumo do Caso 2 & Próximos Passos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Conclusões da Departamentalização Completa:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li>A alocação em múltiplos estágios elimina distorções que uma taxa fabril única provocaria.</li>
+                        <li>A Usinagem utilizou Horas-Máquina e a Montagem utilizou Horas de MOD, respeitando a tecnologia de cada setor.</li>
+                        <li>No Tópico 10, faremos o fechamento conceitual: <strong>As Limitações Gerenciais do Full Costing e a Transição para o Custeio ABC</strong>[cite: 1].</li>
+                    </ol>
+                    <div class="highlight-box">
+                        Avançar para o Tópico 10: Limitações Gerenciais do Full Costing & Transição para o ABC[cite: 1].
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles de Navegação -->
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&larr; Anterior</button>
+                <div class="slide-count" id="slideIndicator">Slide 1 de 10</div>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">Próximo &rarr;</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === index) s.classList.add('active');
+            });
+            slideIndicator.textContent = `Slide ${index + 1} de ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>

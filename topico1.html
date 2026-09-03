@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tópico 01: Custeio por Absorção (Full Costing) | Gestão de Custos - CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--background); color: var(--text-primary); line-height: 1.6; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: var(--secondary); }
+
+        .slide-container {
+            margin: 2rem auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            min-height: 520px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header { margin-bottom: 1.75rem; border-bottom: 2px solid var(--secondary-light); padding-bottom: 1rem; }
+        .slide-tag { color: var(--secondary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .slide-title { font-size: 1.85rem; color: var(--primary); font-weight: 800; margin-top: 0.25rem; }
+        
+        .slide-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.75; }
+        .slide-body p { margin-bottom: 1.25rem; }
+        .slide-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .slide-body li { margin-bottom: 0.5rem; }
+
+        .highlight-box {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover:not(:disabled) { background: var(--secondary); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .slide-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-header">
+            <a href="index.html" class="back-link">&larr; Voltar ao Menu da Aula 03</a>
+            <div style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">
+                Tópico 01: Conceito e Mecânica do Custeio por Absorção
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="slide-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 01 de 10 • Visão Geral</span>
+                    <h2 class="slide-title">Bem-vindo ao Custeio por Absorção</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O <strong>Custeio por Absorção</strong> (também conhecido internacionalmente como <em>Full Costing</em> ou Custeio Pleno dos Custos Fabris) é o método tradicional mais utilizado e consagrado na contabilidade de custos empresarial.</p>
+                    <p>A sua premissa elementar é simples, porém profunda: <strong>todos os custos incorridos no ambiente fabril devem ser absorvidos pelos produtos elaborados</strong>, independentemente de sua classificação comportamental.</p>
+                    <div class="highlight-box">
+                        No Custeio por Absorção, tanto os custos <strong>fixos</strong> quanto os <strong>variáveis</strong>, e tanto os <strong>diretos</strong> quanto os <strong>indiretos</strong> compõem o valor contábil dos estoques de produtos acabados.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 02 de 10 • Origem & Fundamentos</span>
+                    <h2 class="slide-title">A Origem e a Razão Contábil do Método</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O método de absorção nasceu diretamente associado à consolidação da Contabilidade Financeira tradicional após a Revolução Industrial.</p>
+                    <ul>
+                        <li><strong>Separação de Funções:</strong> Assegura que o sacrifício incorrido para gerar bens tangíveis fique estocado até a sua realização econômica em vendas.</li>
+                        <li><strong>Princípio da Competência:</strong> Os gastos fabris não podem virar despesa do período de imediato; eles se tornam Custo dos Produtos Vendidos (CPV) somente no momento em que a respectiva receita de venda for registrada.</li>
+                        <li><strong>Universalidade:</strong> Torna homogênea a valoração de estoques em balanços patrimoniais auditáveis - Padronização de Custos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 03 de 10 • Equação Central</span>
+                    <h2 class="slide-title">A Estrutura de Composição do Custo Fabril</h2>
+                </div>
+                <div class="slide-body">
+                    <p>No Custeio por Absorção, a fórmula analítica do Custo Total de Produção do Período (CPP) se divide em 3 pilares fundamentais:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Componente</th>
+                                <th>Natureza</th>
+                                <th>Exemplo Prático</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Matéria-Prima e Materiais Diretos (MP)</td>
+                                <td>Direto e Variável</td>
+                                <td>Aço, plástico injetado, tecido, farinha de trigo.</td>
+                            </tr>
+                            <tr>
+                                <td>Mão de Obra Direta (MOD)</td>
+                                <td>Direto (Variável/Fixo operacional)</td>
+                                <td>Salários e encargos dos operadores de máquinas.</td>
+                            </tr>
+                            <tr>
+                                <td>Custos Indiretos de Fabricação (CIF)</td>
+                                <td>Indireto (Fixos e Variáveis)</td>
+                                <td>Aluguel do galpão, supervisão, energia elétrica geral.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box">
+                        <strong>Custo de Produção = MP + MOD + CIF</strong> (Despesas administrativas e comerciais ficam sumariamente FORA).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 04 de 10 • Fronteira Contábil</span>
+                    <h2 class="slide-title">A Linha Divisória: Custos vs. Despesas</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Um erro conceitual grave do gestor é confundir o que entra no produto com o que vai direto para o resultado do exercício:</p>
+                    <ul>
+                        <li><strong>Custos de Produção (Dentro da Fábrica):</strong> São ativados! Vão para o Ativo Circulante como Estoques (Produtos em Elaboração e Produtos Acabados). Só transitam para a DRE quando vendidos.</li>
+                        <li><strong>Despesas Administrativas, Comerciais e Financeiras (Fora da Fábrica):</strong> Vão diretamente para a DRE do período como dedução do lucro bruto, sem transitar pelo valor unitário dos produtos.</li>
+                    </ul>
+                    <p>Essa separação preserva a integridade do cálculo da Margem Bruta de Fabricação.</p>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 05 de 10 • Ciclo Operacional</span>
+                    <h2 class="slide-title">O Ciclo do Valor no Balanço e DRE</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Observe o trajeto sequencial percorrido pelos recursos monetários:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li><strong>Consumo Fabril:</strong> Utilizam-se estoques de insumos, horas da equipe e infraestrutura.</li>
+                        <li><strong>Ativação:</strong> O valor total gerado vai para a conta patrimonial de <em>Estoques de Produtos Acabados</em> no Ativo Circulante.</li>
+                        <li><strong>Venda:</strong> Baixa-se o estoque e debita-se a conta de <em>Custo dos Produtos Vendidos (CPV)</em> na DRE.</li>
+                        <li><strong>Estoque Final:</strong> As unidades não comercializadas permanecem no Ativo, guardando parte dos custos fixos da empresa para o próximo período contábil.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 06 de 10 • O Mecanismo de Alocação</span>
+                    <h2 class="slide-title">Alocação Direta vs. Rateio dos Indiretos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Nem todos os custos chegam aos produtos da mesma maneira:</p>
+                    <ul>
+                        <li><strong>Custos Diretos (MP e MOD):</strong> São mensurados com facilidade através de fichas técnicas de produção, requisições de almoxarifado e cartões de ponto (horas apontadas). Não demandam estimativas subjetivas.</li>
+                        <li><strong>Custos Indiretos (CIF):</strong> Por serem comuns a vários produtos ou departamentos (depreciação de prédios, segurança fabril, manutenção), exigem <em>critérios de rateio</em> para serem fatiados e atribuídos a cada item.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 07 de 10 • Vantagens do Método</span>
+                    <h2 class="slide-title">Principais Vantagens do Custeio por Absorção</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Por que o Custeio por Absorção continua sendo o modelo mais implementado no mundo corporativo?</p>
+                    <ul>
+                        <li><strong>Conformidade Regulatória Plena:</strong> É o único método formal aceito pelas normas internacionais (IFRS/CPC) e pelas autoridades tributárias (Receita Federal do Brasil).</li>
+                        <li><strong>Visão Global do Processo:</strong> Considera que sem estrutura fixa (prédio, gerência fabril, seguros), os produtos não poderiam existir fisicamente.</li>
+                        <li><strong>Facilidade de Auditoria:</strong> Baseia-se no custo histórico incorrido, minimizando disputas subjetivas com auditores externos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 08 de 10 • Pontos Críticos</span>
+                    <h2 class="slide-title">Fragilidades e Desafios para o Administrador</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Embora impecável do ponto de vista fiscal, o método apresenta limitações operacionais sérias:</p>
+                    <ul>
+                        <li><strong>Arbitrariedade nos Rateios:</strong> Dividir o aluguel da fábrica proporcionalmente às horas trabalhadas pode punir produtos eficientes e mascarar itens deficitários.</li>
+                        <li><strong>Ilusão do Lucro por Volume:</strong> Aumentar a produção sem vender transfere custos fixos para o estoque no Ativo, "inflando" artificialmente o lucro do período imediato.</li>
+                        <li><strong>Dificuldade na Decisão de Preço Marginal:</strong> Não evidencia de pronto a Margem de Contribuição de curto prazo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 09 de 10 • Comparativo Teórico</span>
+                    <h2 class="slide-title">Custeio por Absorção vs. Custeio Variável</h2>
+                </div>
+                <div class="slide-body">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Critério</th>
+                                <th>Custeio por Absorção (Aula 03)</th>
+                                <th>Custeio Variável (Aula 05)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Custos Fixos Fabris</td>
+                                <td>Incorporados aos estoques de produtos</td>
+                                <td>Tratados como despesas do período (DRE direta)</td>
+                            </tr>
+                            <tr>
+                                <td>Finalidade Primária</td>
+                                <td>Fiscal, societária e balanços externos</td>
+                                <td>Gerencial, tomada de decisão e precificação rápida</td>
+                            </tr>
+                            <tr>
+                                <td>Aceitação pelo Fisco</td>
+                                <td>Obrigatório por lei</td>
+                                <td>Não aceito para fins de apuração de IR/CSLL</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 10 de 10 • Síntese & Conexões</span>
+                    <h2 class="slide-title">Resumo do Tópico & Próximos Passos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Pontos-chave consolidados neste primeiro módulo:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li>O Custeio por Absorção apropria **todos** os custos de fabricação (diretos, indiretos, fixos e variáveis) aos produtos fabricados.</li>
+                        <li>As despesas administrativas e comerciais jamais ingressam no custo do produto; são descarregadas no resultado.</li>
+                        <li>No próximo tópico, investigaremos em detalhes a base regulatória: <strong>CPC 16 e o Regulamento do Imposto de Renda</strong>.</li>
+                    </ol>
+                    <div class="highlight-box">
+                        Avançar para o Tópico 02: Fundamentos Legais e Normas Societárias.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles de Navegação -->
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&larr; Anterior</button>
+                <div class="slide-count" id="slideIndicator">Slide 1 de 10</div>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">Próximo &rarr;</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === index) s.classList.add('active');
+            });
+            slideIndicator.textContent = `Slide ${index + 1} de ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>

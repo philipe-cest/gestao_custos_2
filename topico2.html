@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tópico 02: Fundamentos Legais e Normas Societárias (CPC 16 / RIR) | Gestão de Custos - CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--background); color: var(--text-primary); line-height: 1.6; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: var(--secondary); }
+
+        .slide-container {
+            margin: 2rem auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            min-height: 520px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header { margin-bottom: 1.75rem; border-bottom: 2px solid var(--secondary-light); padding-bottom: 1rem; }
+        .slide-tag { color: var(--secondary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .slide-title { font-size: 1.85rem; color: var(--primary); font-weight: 800; margin-top: 0.25rem; }
+        
+        .slide-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.75; }
+        .slide-body p { margin-bottom: 1.25rem; }
+        .slide-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .slide-body li { margin-bottom: 0.5rem; }
+
+        .highlight-box {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover:not(:disabled) { background: var(--secondary); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .slide-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-header">
+            <a href="index.html" class="back-link">&larr; Voltar ao Menu da Aula 03</a>
+            <div style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">
+                Tópico 02: Fundamentos Legais e Normas Societárias (CPC 16 / RIR)
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="slide-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 01 de 10 • Contexto Regulatório</span>
+                    <h2 class="slide-title">Por que Custos é uma Exigência Legal?</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Para o Administrador, custos não é apenas uma ferramenta analítica de otimização de lucros; é uma obrigação estrita de governança contábil, societária e tributária.</p>
+                    <p>Tanto a Lei das Sociedades por Ações (Lei nº 6.404/76) quanto os padrões internacionais do <em>IASB (International Accounting Standards Board)</em> exigem critérios objetivos e verificáveis para a avaliação dos estoques industriais.</p>
+                    <div class="highlight-box">
+                        A avaliação inadequada de estoques gera distorções imediatas no Lucro Líquido, prejudicando acionistas, bancos e provocando penalidades por parte do Fisco.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 02 de 10 • O Marco Societário</span>
+                    <h2 class="slide-title">A Lei das S.A. (Lei 6.404/76, Art. 183)</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O Artigo 183, inciso II da Lei nº 6.404/76 estabelece a regra de ouro para a valoração dos estoques:</p>
+                    <ul>
+                        <li><strong>Custo de Aquisição ou Produção:</strong> Os estoques de mercadorias e insumos são avaliados pelo custo de aquisição; os produtos fabricados, pelo custo de produção.</li>
+                        <li><strong>Critério da Prudência / Valor Realizável Líquido:</strong> Devem ser deduzidos de provisões quando o valor de mercado for inferior ao custo contábil.</li>
+                        <li><strong>Exclusão de Lucros Não Realizados:</strong> É expressamente proibido contabilizar qualquer margem de lucro dentro dos produtos ainda não vendidos estocados no Ativo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 03 de 10 • Pronunciamento Técnico</span>
+                    <h2 class="slide-title">O Pronunciamento Técnico CPC 16 (Estoques)</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O <strong>CPC 16 (R1)</strong>, correlato à norma internacional <em>IAS 2 (Inventories)</em>, detalha tecnicamente como o Custeio por Absorção deve ser operacionalizado:</p>
+                    <ul>
+                        <li><strong>Custos de Transformação:</strong> Devem incluir os custos diretamente relacionados às unidades produzidas (MOD e matérias-primas) e a <em>alocação sistemática de custos indiretos de produção, fixos e variáveis</em>.</li>
+                        <li><strong>Custos Indiretos Fixos:</strong> Devem ser apropriados com base na capacidade normal de produção da planta, sem transferir custos de ociosidade operacional aos estoques.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 04 de 10 • Itens Não Incluídos no Estoque</span>
+                    <h2 class="slide-title">O que o CPC 16 Proíbe de Estocar?</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O parágrafo 16 do CPC 16 elenca explicitamente os dispêndios que <strong>não podem</strong> ser incorporados aos estoques e devem ser reconhecidos imediatamente como despesa do período:</p>
+                    <ul>
+                        <li>Valores anormais de desperdício de materiais, mão de obra ou outros recursos de produção;</li>
+                        <li>Gastos com armazenagem de produtos acabados (a menos que sejam necessários ao processo de maturação, como queijos e vinhos);</li>
+                        <li>Despesas administrativas gerais que não contribuem para colocar o estoque em sua localização e condição atuais;</li>
+                        <li>Despesas de comercialização, marketing e distribuição de vendas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 05 de 10 • Regulamento do IR</span>
+                    <h2 class="slide-title">A Exigência Fiscal: O RIR e a Receita Federal</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O <strong>Regulamento do Imposto de Renda (RIR/2018 - Decreto nº 9.580/2018)</strong> impõe o Custeio por Absorção às empresas tributadas pelo Lucro Real.</p>
+                    <p>Se a empresa adotasse métodos como o Custeio Variável (onde os custos fixos são lançados de imediato na DRE como despesa), o Lucro Tributável do exercício corrente seria reduzido em momentos de estocagem elevada, gerando recolhimento postergado de IRPJ e CSLL.</p>
+                    <div class="highlight-box">
+                        Para o Fisco brasileiro, o Custeio Variável é ilegal para a apuração do IRPJ/CSLL. Toda empresa industrial ou equiparada deve manter escrituração de custos baseada em absorção contábil integrada.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 06 de 10 • Arbitramento de Custos</span>
+                    <h2 class="slide-title">O Risco do Arbitramento Fiscal (Art. 303 RIR)</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O que ocorre se a indústria não possuir um sistema de custos confiável e integrado à contabilidade geral?</p>
+                    <p>A Receita Federal tem a prerrogativa legal de <strong>arbitrar o valor dos estoques</strong>, aplicando percentuais punitivos pré-fixados:</p>
+                    <ul>
+                        <li><strong>Produtos Acabados:</strong> Arbitrados em até 70% do maior preço de venda no período de apuração;</li>
+                        <li><strong>Produtos em Elaboração:</strong> Arbitrados em até 80% do valor dos produtos acabados ou 56% do preço de venda.</li>
+                    </ul>
+                    <p>Isso quase sempre eleva o imposto a pagar e acarreta multas pesadas por falta de controle de estoques.</p>
+                </div>
+            </div>
+
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 07 de 10 • Princípios Fundamentais</span>
+                    <h2 class="slide-title">Princípios Contábeis Respeitados</h2>
+                </div>
+                <div class="slide-body">
+                    <p>O Custeio por Absorção cumpre três postulados da Teoria da Contabilidade:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Princípio</th>
+                                <th>Aplicação Prática no Custeio por Absorção</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Competência</td>
+                                <td>O custo só reduz o patrimônio líquido quando a receita gerada pelo bem for realizada.</td>
+                            </tr>
+                            <tr>
+                                <td>Confrontação</td>
+                                <td>Despesas e custos devem ser confrontados diretamente com as receitas que ajudaram a gerar.</td>
+                            </tr>
+                            <tr>
+                                <td>Consistência / Uniformidade</td>
+                                <td>Os critérios de rateio não podem ser alterados anualmente de forma arbitrária para manipular lucros.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 08 de 10 • Governança & Auditoria</span>
+                    <h2 class="slide-title">Auditoria Externa e Transparência Corporativa</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Em empresas com governança corporativa ativa ou registradas na CVM (Comissão de Valores Mobiliários), a sistemática de rateios é alvo constante de auditorias externas:</p>
+                    <ul>
+                        <li>Os auditores checam se a capacidade instalada declarada corresponde à realidade da fábrica;</li>
+                        <li>Testa-se a consistência dos critérios de rateio entre anos fiscais consecutivos;</li>
+                        <li>Realiza-se o <em>Teste de Impairment</em> dos estoques (ajuste ao valor realizável líquido caso o mercado desvalorize os produtos estocados).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 09 de 10 • Caso Real: Impacto Tributário</span>
+                    <h2 class="slide-title">Exemplo Numérico: Absorção vs. Visão Fiscal</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Considere uma indústria que produziu 1.000 unidades (Custo Fixo: R$ 40.000; Variável: R$ 60/un), mas só vendeu 600 unidades a R$ 150:</p>
+                    <ul>
+                        <li><strong>Custo Unitário Total:</strong> R$ 40 (Fixo) + R$ 60 (Var) = R$ 100/un.</li>
+                        <li><strong>Estoque Final (400 unidades):</strong> 400 x R$ 100 = R$ 40.000 retidos no Ativo.</li>
+                        <li><strong>CPV na DRE:</strong> 600 x R$ 100 = R$ 60.000.</li>
+                        <li><strong>Lucro Bruto:</strong> R$ 90.000 (Receita) - R$ 60.000 (CPV) = R$ 30.000.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        Se a empresa lançasse os R$ 40.000 de fixos de uma vez no resultado, o lucro cairia para R$ 14.000 e o Fisco recolheria menos tributos agora. Por isso o método de absorção é estritamente fiscalizado!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 10 de 10 • Síntese & Conexões</span>
+                    <h2 class="slide-title">Resumo do Tópico & Próximos Passos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Conclusões essenciais do Tópico 02:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li>O Custeio por Absorção é mandatório pelas leis societárias (Lei 6.404/76), normas contábeis (CPC 16) e legislação fiscal (RIR/2018).</li>
+                        <li>Falhas na estrutura de custos sujeitam a organização ao arbitramento fiscal compulsório.</li>
+                        <li>No próximo tópico, analisaremos o ponto de maior complexidade operacional: <strong>O Papel e o Desafio dos Custos Indiretos de Fabricação (CIF)</strong>.</li>
+                    </ol>
+                    <div class="highlight-box">
+                        Avançar para o Tópico 03: O Papel e o Desafio dos Custos Indiretos de Fabricação (CIF).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles de Navegação -->
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&larr; Anterior</button>
+                <div class="slide-count" id="slideIndicator">Slide 1 de 10</div>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">Próximo &rarr;</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === index) s.classList.add('active');
+            });
+            slideIndicator.textContent = `Slide ${index + 1} de ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>

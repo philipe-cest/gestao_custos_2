@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tópico 03: O Desafio dos Custos Indiretos de Fabricação (CIF) | Gestão de Custos - CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none' stroke-linecap='round'/><circle cx='75' cy='25' r='6' fill='%230080FF'/></svg>">
+
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--background); color: var(--text-primary); line-height: 1.6; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .back-link:hover { color: var(--secondary); }
+
+        .slide-container {
+            margin: 2rem auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            min-height: 520px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide { display: none; }
+        .slide.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header { margin-bottom: 1.75rem; border-bottom: 2px solid var(--secondary-light); padding-bottom: 1rem; }
+        .slide-tag { color: var(--secondary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .slide-title { font-size: 1.85rem; color: var(--primary); font-weight: 800; margin-top: 0.25rem; }
+        
+        .slide-body { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.75; }
+        .slide-body p { margin-bottom: 1.25rem; }
+        .slide-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+        .slide-body li { margin-bottom: 0.5rem; }
+
+        .highlight-box {
+            background-color: var(--secondary-light);
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .table-custom th, .table-custom td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover:not(:disabled) { background: var(--secondary); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .slide-count { font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-header">
+            <a href="index.html" class="back-link">&larr; Voltar ao Menu da Aula 03</a>
+            <div style="font-weight: 600; color: var(--primary); font-size: 0.9rem;">
+                Tópico 03: O Desafio dos Custos Indiretos de Fabricação (CIF)
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="slide-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 01 de 10 • Introdução ao CIF</span>
+                    <h2 class="slide-title">A Natureza dos Custos Indiretos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Enquanto a matéria-prima e a mão de obra direta entram fisicamente no produto de forma visível e mensurável, os <strong>Custos Indiretos de Fabricação (CIF)</strong> representam a infraestrutura que viabiliza a operação.</p>
+                    <p>O CIF engloba todos os custos fabris que <em>não podem ser associados diretamente</em> a uma unidade específica de produto sem a adoção de um critério de rateio prévio.</p>
+                    <div class="highlight-box">
+                        Sem os custos indiretos a fábrica não opera: iluminação, manutenção de equipamentos, supervisão fabril, ferramentas de corte de uso geral e limpeza industrial.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 02 de 10 • A Mudança Estrutural</span>
+                    <h2 class="slide-title">A Revolução dos Custos na Indústria Moderna</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Historicamente, no início do século XX, a composição típica dos custos fabris era dominada por mão de obra e matéria-prima (mais de 80% do total).</p>
+                    <ul>
+                        <li><strong>Cenário Tradicional:</strong> Poucas máquinas, alta intensidade de mão de obra direta. Erros de rateio de CIF tinham impacto marginal negligenciável.</li>
+                        <li><strong>Cenário Atual da Indústria 4.0:</strong> Automação, robótica avançada, manutenção preventiva complexa e softwares de controle. A MOD direta reduziu-se drasticamente, enquanto o CIF tornou-se a parcela predominante dos custos de transformação.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 03 de 10 • Tipologias de CIF</span>
+                    <h2 class="slide-title">Classificação Interna do CIF</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Os custos indiretos podem assumir comportamentos distintos em relação ao volume de produção:</p>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th>Características</th>
+                                <th>Exemplos Comuns</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CIF Variável</td>
+                                <td>Oscila em conformidade direta com as horas ou o volume de produção do período.</td>
+                                <td>Energia elétrica consumida pela força motriz das máquinas, lubrificantes industriais.</td>
+                            </tr>
+                            <tr>
+                                <td>CIF Fixo</td>
+                                <td>Permanece inalterado independentemente do nível de produção até o limite da capacidade instalada.</td>
+                                <td>Aluguel da fábrica, seguro predial fabril, depreciação linear de maquinário, salário da gerência de fábrica.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 04 de 10 • O Paradoxo do Rateio</span>
+                    <h2 class="slide-title">O Dilema da Subjetividade</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Como dividir R$ 100.000 de aluguel e R$ 40.000 de supervisão entre três produtos diferentes que compartilham as mesmas instalações industriais?</p>
+                    <p>Não há fórmula química ou lei física que estabeleça quanto de seguro ou de IPTU um determinado produto consome. Toda base de rateio constitui uma <strong>estimativa proporcional baseada em premissas de causa e efeito</strong>.</p>
+                    <div class="highlight-box">
+                        O desafio do Administrador não é eliminar a subjetividade (o que é matematicamente impossível no Custeio por Absorção), mas sim escolher critérios técnicos que minimizem distorções severas.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 05 de 10 • Materiais e Mão de Obra Indireta</span>
+                    <h2 class="slide-title">Materiais Indiretos (MI) e Mão de Obra Indireta (MOI)</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Dois dos maiores componentes do CIF corporativo merecem atenção específica:</p>
+                    <ul>
+                        <li><strong>Materiais Indiretos (MI):</strong> Graxas, óleos industriais, lixas, parafusos secundários, colas e itens de segurança individual (EPIs). O esforço contábil para medir seu consumo exato por unidade custaria mais que o próprio item.</li>
+                        <li><strong>Mão de Obra Indireta (MOI):</strong> Mecânicos de manutenção, encarregados de turno, técnicos de controle de qualidade e fiscais de expedição interna da fábrica.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 06 de 10 • Depreciação Fabril</span>
+                    <h2 class="slide-title">Depreciação de Máquinas e Instalações</h2>
+                </div>
+                <div class="slide-body">
+                    <p>A depreciação do ativo imobilizado fabril compõe uma fatia expressiva do CIF total:</p>
+                    <ul>
+                        <li><strong>Método Linear (Quotas Constantes):</strong> O mais adotado fiscalmente; divide o valor depreciável pelos anos de vida útil estimada, gerando um custo rigorosamente fixo mensal.</li>
+                        <li><strong>Método das Horas de Trabalho / Unidades Produzidas:</strong> Apropriado à medida que as máquinas operam, transformando contabilmente a depreciação em um custo variável.</li>
+                    </ul>
+                    <p>O método adotado altera diretamente o comportamento dos custos estocados mês a mês.</p>
+                </div>
+            </div>
+
+            <!-- Slide 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 07 de 10 • Riscos de Distorção</span>
+                    <h2 class="slide-title">O Perigo do Subsídio Cruzado</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Quando os custos indiretos são alocados com base em critérios genéricos inadequados (como puro volume produzido), surge a anomalia do <strong>Subsídio Cruzado</strong>:</p>
+                    <ul>
+                        <li>Produtos simples e de alto volume acabam recebendo mais custos indiretos do que realmente consomem;</li>
+                        <li>Produtos complexos, customizados e que exigem setups frequentes recebem menos custos do que deveriam;</li>
+                        <li><strong>Resultado Estratégico:</strong> A empresa precifica mal, vendendo produtos complexos com prejuízo invisível e perdendo competitividade em linhas simples.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 08 de 10 • Capacidade Normal vs. Ociosidade</span>
+                    <h2 class="slide-title">Tratamento Contábil da Ociosidade Fabril</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Segundo o CPC 16, a apropriação dos custos indiretos fixos aos produtos deve ter como base a <strong>capacidade normal de produção</strong>.</p>
+                    <div class="highlight-box">
+                        Se a fábrica opera a 50% de sua capacidade em períodos de crise, os custos fixos relativos aos 50% parados NÃO podem inflar o valor unitário do estoque. Devem ser debitados diretamente no resultado do período como despesa de ociosidade operacional.
+                    </div>
+                    <p>Isso evita que produtos em anos de baixa demanda pareçam artificialmente mais caros em estoque.</p>
+                </div>
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 09 de 10 • Checklist para o Gestor</span>
+                    <h2 class="slide-title">Regras de Ouro na Gestão do CIF</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Para manter o controle sobre os custos indiretos, o gestor de custos deve:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li>Segregar claramente os gastos que são custos de fábrica daqueles que são despesas administrativas do escritório central.</li>
+                        <li>Avaliar periodicamente se itens tratados como indiretos podem ser convertidos em diretos via medidores (como sensores individuais de energia por máquina).</li>
+                        <li>Evitar o uso de uma taxa única global para toda a fábrica quando os processos produtivos forem heterogêneos.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Slide 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <span class="slide-tag">Slide 10 de 10 • Síntese & Conexões</span>
+                    <h2 class="slide-title">Resumo do Tópico & Próximos Passos</h2>
+                </div>
+                <div class="slide-body">
+                    <p>Principais conclusões consolidadas:</p>
+                    <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+                        <li>O CIF é indispensável à manufatura, mas exige procedimentos sistemáticos de alocação devido à ausência de rastreabilidade direta.</li>
+                        <li>A expansão da tecnologia produtiva tornou o CIF a parcela mais relevante da matriz fabril.</li>
+                        <li>No próximo módulo, exploraremos as <strong>Bases de Rateio Tradicionais</strong> mais consagradas e como utilizá-las matematicamente na prática.</li>
+                    </ol>
+                    <div class="highlight-box">
+                        Avançar para o Tópico 04: Critérios e Bases de Rateio Tradicionais.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles de Navegação -->
+            <div class="controls">
+                <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&larr; Anterior</button>
+                <div class="slide-count" id="slideIndicator">Slide 1 de 10</div>
+                <button class="btn" id="nextBtn" onclick="changeSlide(1)">Próximo &rarr;</button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active');
+                if (i === index) s.classList.add('active');
+            });
+            slideIndicator.textContent = `Slide ${index + 1} de ${slides.length}`;
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < slides.length - 1) changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 0) changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>
