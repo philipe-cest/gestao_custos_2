@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor: Solucionador em Tempo Real | Custeio por Absorção CEST</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23002060'/><path d='M20 75 Q50 65 75 25' stroke='%230080FF' stroke-width='8' fill='none'/></svg>">
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --primary-light: #003399;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --accent: #00A3FF;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+            --border: #CBD5E1;
+            
+            --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0, 32, 96, 0.06);
+            --shadow-md: 0 6px 20px -2px rgba(0, 32, 96, 0.1);
+            --transition: all 0.2s ease-in-out;
+            --max-width: 1200px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .header-brand h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-brand p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .header-badge {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-sm);
+            text-align: right;
+            font-size: 0.85rem;
+        }
+
+        .header-badge strong {
+            display: block;
+            font-size: 1rem;
+            color: #FFFFFF;
+        }
+
+        .quick-nav {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .quick-nav-title {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .nav-btn {
+            background: var(--background);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.65rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+            color: #FFFFFF;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .solver-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border-top: 5px solid var(--secondary);
+            transition: var(--transition);
+        }
+
+        .solver-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .card-q-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .card-q-tag {
+            background: var(--secondary-light);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .inputs-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .inputs-section-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            padding: 0.75rem 0.9rem;
+            font-size: 1rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--primary);
+            background: #FFFFFF;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.15);
+        }
+
+        .solution-box {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .solution-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .formula-line {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--secondary);
+            background: #FFFFFF;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-item {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            padding-left: 0.5rem;
+        }
+
+        .res-final-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .res-final-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--secondary-light);
+            font-weight: 700;
+            display: block;
+        }
+
+        .res-final-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #A7F3D0;
+            letter-spacing: -0.02em;
+        }
+
+        .pedagogic-note {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: #EFF6FF;
+            border-left: 3px solid var(--secondary);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+        }
+
+        .pedagogic-note strong {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <div class="header-brand">
+                <h1>Painel do Professor: Solucionador em Tempo Real</h1>
+                <p>Custeio por Absorção & Rateios • Administração CEST Anil • 4º Período</p>
+            </div>
+            <div class="header-badge">
+                <strong>Prof. Msc. Philipe Sampaio Lima</strong>
+                <span>Calculadora Pedagógica & Resolução Passo a Passo</span>
+            </div>
+        </header>
+
+        <div class="quick-nav">
+            <div class="quick-nav-title">
+                <span>Navegador Rápido de Questões</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Clique no número para rolar direto até a questão</span>
+            </div>
+            <div class="nav-buttons" id="navButtonsContainer"></div>
+        </div>
+
+        <div id="solversContainer"></div>
+
+    </div>
+
+    <script>
+        function formatMoeda(num) {
+            if (isNaN(num)) return "R$ 0,00";
+            return "R$ " + num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatNumero(num, casas = 2) {
+            if (isNaN(num)) return "0";
+            return num.toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
+        }
+
+        function parseBR(val) {
+            if (!val) return 0;
+            const limpo = val.toString().trim().replace(/\./g, '').replace(',', '.');
+            const num = parseFloat(limpo);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function aplicarMascara(el) {
+            el.addEventListener('input', function(e) {
+                let v = e.target.value.replace(/[^\d,]/g, "");
+                let parts = v.split(',');
+                if (parts.length > 2) {
+                    v = parts[0] + ',' + parts.slice(1).join('');
+                }
+                e.target.value = v;
+            });
+        }
+
+        const questoesConfig = [
+            {
+                id: 1,
+                titulo: "Questão 1: Taxa de Rateio de CIF por Horas-Máquina (H/M)",
+                tag: "Bases de Rateio",
+                enunciado: "Calcular a taxa horária de absorção dividindo o montante do CIF pelo total de Horas-Máquina da fábrica.",
+                formula: "Taxa H/M = CIF Total ÷ Total de Horas-Máquina",
+                inputs: [
+                    { id: "q1_cif", label: "CIF Total (R$)", default: "100.000,00" },
+                    { id: "q1_hm", label: "Horas-Máquina (H/M)", default: "2.500" }
+                ],
+                calcular: function() {
+                    const cif = parseBR(document.getElementById('q1_cif').value);
+                    const hm = parseBR(document.getElementById('q1_hm').value) || 1;
+                    const taxa = cif / hm;
+                    return {
+                        steps: [
+                            `Passo 1: Identificar a equação básica de rateio: Taxa = CIF Total ÷ Base Escolhida`,
+                            `Passo 2: Substituir os valores informados: Taxa = ${formatMoeda(cif)} ÷ ${formatNumero(hm, 0)} Horas-Máquina`,
+                            `Passo 3: Executar a divisão direta: Taxa = ${formatMoeda(taxa)} por Hora-Máquina`
+                        ],
+                        resultado: `${formatMoeda(taxa)} / H/M`,
+                        nota: `Esta taxa converte os gastos indiretos da infraestrutura mecânica em um coeficiente de aplicação direta por lote.`
+                    };
+                }
+            },
+            {
+                id: 2,
+                titulo: "Questão 2: Apropriação de CIF em Lote Específico",
+                tag: "Aplicação de Rateio",
+                enunciado: "Multiplicar a taxa horária pré-determinada pela quantidade de horas-máquina consumidas pelo lote.",
+                formula: "CIF Absorvido = Taxa Horária × Horas-Máquina Consumidas",
+                inputs: [
+                    { id: "q2_taxa", label: "Taxa de Rateio (R$/HM)", default: "45,00" },
+                    { id: "q2_horas", label: "Horas-Máquina do Lote (h)", default: "400" }
+                ],
+                calcular: function() {
+                    const taxa = parseBR(document.getElementById('q2_taxa').value);
+                    const horas = parseBR(document.getElementById('q2_horas').value);
+                    const totalCif = taxa * horas;
+                    return {
+                        steps: [
+                            `Passo 1: Identificar a relação de consumo: CIF do Lote = Taxa de Rateio × Tempo de Operação`,
+                            `Passo 2: Substituir: CIF = ${formatMoeda(taxa)} × ${formatNumero(horas, 0)} Horas-Máquina`,
+                            `Passo 3: Calcular o produto: CIF Absorvido = ${formatMoeda(totalCif)}`
+                        ],
+                        resultado: formatMoeda(totalCif),
+                        nota: `Este montante será somado aos custos de materiais diretos e MOD para fechar o custo do lote.`
+                    };
+                }
+            },
+            {
+                id: 3,
+                titulo: "Questão 3: Custo Fabril Unitário Pleno (Full Costing)",
+                tag: "Custeio por Absorção",
+                enunciado: "Somar os custos diretos com a parcela rateada de custos indiretos atribuídos à unidade.",
+                formula: "Custo Unitário Pleno = Matéria-Prima + MOD + CIF Rateado",
+                inputs: [
+                    { id: "q3_mp", label: "Matéria-Prima Unitária (R$)", default: "50,00" },
+                    { id: "q3_mod", label: "MOD Unitária (R$)", default: "30,00" },
+                    { id: "q3_cif", label: "CIF Rateado Unitário (R$)", default: "25,00" }
+                ],
+                calcular: function() {
+                    const mp = parseBR(document.getElementById('q3_mp').value);
+                    const mod = parseBR(document.getElementById('q3_mod').value);
+                    const cif = parseBR(document.getElementById('q3_cif').value);
+                    const total = mp + mod + cif;
+                    return {
+                        steps: [
+                            `Passo 1: Reunir os três pilares da fábrica: Custo = MP + MOD + CIF`,
+                            `Passo 2: Substituir os custos unitários: Custo = ${formatMoeda(mp)} + ${formatMoeda(mod)} + ${formatMoeda(cif)}`,
+                            `Passo 3: Totalizar o custo por absorção integral: Custo = ${formatMoeda(total)} / unidade`
+                        ],
+                        resultado: `${formatMoeda(total)} / un`,
+                        nota: `Lembre que despesas comerciais ou administrativas não entram neste cálculo fabril.`
+                    };
+                }
+            },
+            {
+                id: 4,
+                titulo: "Questão 4: Rateio Proporcional à Matéria-Prima Consumida",
+                tag: "Bases Financeiras",
+                enunciado: "Determinar a participação percentual do Produto Alfa na MP total e aplicar sobre o CIF global.",
+                formula: "CIF do Produto Alfa = CIF Total × (MP do Produto Alfa ÷ MP Total)",
+                inputs: [
+                    { id: "q4_cif", label: "CIF Total a Ratear (R$)", default: "120.000,00" },
+                    { id: "q4_mpalfa", label: "MP Produto Alfa (R$)", default: "75.000,00" },
+                    { id: "q4_mpbeta", label: "MP Produto Beta (R$)", default: "50.000,00" }
+                ],
+                calcular: function() {
+                    const cif = parseBR(document.getElementById('q4_cif').value);
+                    const mpA = parseBR(document.getElementById('q4_mpalfa').value);
+                    const mpB = parseBR(document.getElementById('q4_mpbeta').value);
+                    const totalMp = mpA + mpB || 1;
+                    const percA = mpA / totalMp;
+                    const cifA = cif * percA;
+                    return {
+                        steps: [
+                            `Passo 1: Somar a Matéria-Prima total dos produtos: ${formatMoeda(mpA)} + ${formatMoeda(mpB)} = ${formatMoeda(totalMp)}`,
+                            `Passo 2: Calcular a cota percentual de Alfa: ${formatMoeda(mpA)} ÷ ${formatMoeda(totalMp)} = ${(percA * 100).toFixed(2)}%`,
+                            `Passo 3: Multiplicar o percentual pelo CIF Total: ${formatMoeda(cif)} × ${(percA * 100).toFixed(2)}% = ${formatMoeda(cifA)}`
+                        ],
+                        resultado: formatMoeda(cifA),
+                        nota: `O Produto Beta ficará com os ${formatMoeda(cif - cifA)} restantes (${((1 - percA) * 100).toFixed(2)}%).`
+                    };
+                }
+            },
+            {
+                id: 5,
+                titulo: "Questão 5: Rateio Secundário - Manutenção para Usinagem",
+                tag: "Departamentalização",
+                enunciado: "Transferir os custos acumulados no Centro de Manutenção para os Centros Produtivos por horas de serviço.",
+                formula: "Repasse à Usinagem = Custo da Manutenção × (Horas Usinagem ÷ Horas Totais)",
+                inputs: [
+                    { id: "q5_man", label: "Custo Manutenção (R$)", default: "50.000,00" },
+                    { id: "q5_husi", label: "Horas na Usinagem (h)", default: "800" },
+                    { id: "q5_hmon", label: "Horas na Montagem (h)", default: "200" }
+                ],
+                calcular: function() {
+                    const cMan = parseBR(document.getElementById('q5_man').value);
+                    const hUsi = parseBR(document.getElementById('q5_husi').value);
+                    const hMon = parseBR(document.getElementById('q5_hmon').value);
+                    const hTot = hUsi + hMon || 1;
+                    const taxaH = cMan / hTot;
+                    const repasse = taxaH * hUsi;
+                    return {
+                        steps: [
+                            `Passo 1: Somar a base de horas de reparo: ${formatNumero(hUsi, 0)}h + ${formatNumero(hMon, 0)}h = ${formatNumero(hTot, 0)} horas`,
+                            `Passo 2: Achar o custo por hora de manutenção: ${formatMoeda(cMan)} ÷ ${formatNumero(hTot, 0)}h = ${formatMoeda(taxaH)} / hora`,
+                            `Passo 3: Multiplicar pelas horas prestadas à Usinagem: ${formatNumero(hUsi, 0)}h × ${formatMoeda(taxaH)} = ${formatMoeda(repasse)}`
+                        ],
+                        resultado: formatMoeda(repasse),
+                        nota: `O Centro de Manutenção zera o seu saldo após repassar ${formatMoeda(repasse)} à Usinagem e ${formatMoeda(cMan - repasse)} à Montagem.`
+                    };
+                }
+            },
+            {
+                id: 6,
+                titulo: "Questão 6: Rateio Secundário - Almoxarifado para Produtivos",
+                tag: "Departamentalização",
+                enunciado: "Distribuir os custos do Almoxarifado com base na quantidade de requisições de insumos atendidas.",
+                formula: "Repasse = Custo Almoxarifado × (Requisições do Setor ÷ Total de Requisições)",
+                inputs: [
+                    { id: "q6_alm", label: "Custo Almoxarifado (R$)", default: "36.000,00" },
+                    { id: "q6_reqa", label: "Requisições Estamparia (un)", default: "70" },
+                    { id: "q6_reqb", label: "Requisições Pintura (un)", default: "30" }
+                ],
+                calcular: function() {
+                    const cAlm = parseBR(document.getElementById('q6_alm').value);
+                    const reqA = parseBR(document.getElementById('q6_reqa').value);
+                    const reqB = parseBR(document.getElementById('q6_reqb').value);
+                    const totalReq = reqA + reqB || 1;
+                    const custoReq = cAlm / totalReq;
+                    const repasseA = custoReq * reqA;
+                    return {
+                        steps: [
+                            `Passo 1: Total de requisições expedidas: ${formatNumero(reqA, 0)} + ${formatNumero(reqB, 0)} = ${formatNumero(totalReq, 0)} requisições`,
+                            `Passo 2: Custo unitário de atendimento: ${formatMoeda(cAlm)} ÷ ${formatNumero(totalReq, 0)} req = ${formatMoeda(custoReq)} / requisição`,
+                            `Passo 3: Multiplicar pelo consumo da Estamparia: ${formatNumero(reqA, 0)} req × ${formatMoeda(custoReq)} = ${formatMoeda(repasseA)}`
+                        ],
+                        resultado: formatMoeda(repasseA),
+                        nota: `O Almoxarifado é um Centro de Apoio típico que transfere 100% de seus custos aos departamentos da linha de frente.`
+                    };
+                }
+            },
+            {
+                id: 7,
+                titulo: "Questão 7: Rateio Primário por Área Física Ocupada (m²)",
+                tag: "Rateio Primário",
+                enunciado: "Distribuir despesas prediais gerais (aluguel ou IPTU) proporcionalmente à área em m² ocupada pelo departamento.",
+                formula: "Aluguel Alocado = Aluguel Total × (Área do Centro ÷ Área Total da Fábrica)",
+                inputs: [
+                    { id: "q7_aluguel", label: "Aluguel Fabril Total (R$)", default: "60.000,00" },
+                    { id: "q7_m2usi", label: "Área da Usinagem (m²)", default: "1.200" },
+                    { id: "q7_m2tot", label: "Área Total Fábrica (m²)", default: "3.000" }
+                ],
+                calcular: function() {
+                    const aluguel = parseBR(document.getElementById('q7_aluguel').value);
+                    const m2Usi = parseBR(document.getElementById('q7_m2usi').value);
+                    const m2Tot = parseBR(document.getElementById('q7_m2tot').value) || 1;
+                    const taxaM2 = aluguel / m2Tot;
+                    const alocado = taxaM2 * m2Usi;
+                    return {
+                        steps: [
+                            `Passo 1: Calcular a taxa de aluguel por metro quadrado: ${formatMoeda(aluguel)} ÷ ${formatNumero(m2Tot, 0)} m² = ${formatMoeda(taxaM2)} / m²`,
+                            `Passo 2: Multiplicar pela área ocupada pela Usinagem: ${formatNumero(m2Usi, 0)} m² × ${formatMoeda(taxaM2)}`,
+                            `Passo 3: Valor alocado no Rateio Primário: ${formatMoeda(alocado)}`
+                        ],
+                        resultado: formatMoeda(alocado),
+                        nota: `A proporção de ocupação do espaço (${((m2Usi / m2Tot) * 100).toFixed(2)}%) define a fatia do aluguel do galpão.`
+                    };
+                }
+            },
+            {
+                id: 8,
+                titulo: "Questão 8: Diluição de Custo Fixo Unitário por Volume",
+                tag: "Comportamento dos Custos",
+                enunciado: "Dividir o montante de custos fixos pela escala de produção para verificar o custo unitário fixo.",
+                formula: "Custo Fixo Unitário = Custo Fixo Total ÷ Volume Produzido",
+                inputs: [
+                    { id: "q8_cftot", label: "Custo Fixo Total (R$)", default: "180.000,00" },
+                    { id: "q8_vol", label: "Volume Produzido (unidades)", default: "6.000" }
+                ],
+                calcular: function() {
+                    const cf = parseBR(document.getElementById('q8_cftot').value);
+                    const vol = parseBR(document.getElementById('q8_vol').value) || 1;
+                    const cfu = cf / vol;
+                    return {
+                        steps: [
+                            `Passo 1: Identificar a relação de diluição fixa: CFU = CF Total ÷ Volume`,
+                            `Passo 2: Substituir: CFU = ${formatMoeda(cf)} ÷ ${formatNumero(vol, 0)} unidades`,
+                            `Passo 3: Efetuar a divisão: CFU = ${formatMoeda(cfu)} / unidade`
+                        ],
+                        resultado: `${formatMoeda(cfu)} / un`,
+                        nota: `Quanto maior o volume, menor o CFU. Se o volume caísse para 3.000 un, o CFU dobraria para ${formatMoeda(cf / (vol / 2))}.`
+                    };
+                }
+            },
+            {
+                id: 9,
+                titulo: "Questão 9: Custos Fixos Retidos no Estoque (Balanço Patrimonial)",
+                tag: "Efeito Estoque",
+                enunciado: "Calcular o valor dos custos fixos que permanecem ativados no estoque das peças não comercializadas.",
+                formula: "Custo Fixo Estocado = (Custo Fixo ÷ Produção) × (Produção − Vendas)",
+                inputs: [
+                    { id: "q9_cf", label: "Custo Fixo Total (R$)", default: "100.000,00" },
+                    { id: "q9_fab", label: "Qtd. Produzida (un)", default: "8.000" },
+                    { id: "q9_vend", label: "Qtd. Vendida (un)", default: "6.000" }
+                ],
+                calcular: function() {
+                    const cf = parseBR(document.getElementById('q9_cf').value);
+                    const fab = parseBR(document.getElementById('q9_fab').value) || 1;
+                    const vend = parseBR(document.getElementById('q9_vend').value);
+                    const cfuFixo = cf / fab;
+                    const sobra = Math.max(0, fab - vend);
+                    const retido = cfuFixo * sobra;
+                    return {
+                        steps: [
+                            `Passo 1: Custo fixo embutido em cada unidade produzida: ${formatMoeda(cf)} ÷ ${formatNumero(fab, 0)} un = ${formatMoeda(cfuFixo)} / un`,
+                            `Passo 2: Quantidade de produtos que sobraram no armazém: ${formatNumero(fab, 0)} − ${formatNumero(vend, 0)} = ${formatNumero(sobra, 0)} un`,
+                            `Passo 3: Custos fixos guardados no Ativo Circulante: ${formatNumero(sobra, 0)} un × ${formatMoeda(cfuFixo)} = ${formatMoeda(retido)}`
+                        ],
+                        resultado: formatMoeda(retido),
+                        nota: `Estes custos fixos não reduziram o lucro do mês na DRE, pois ficaram estocados no balanço até a venda futura.`
+                    };
+                }
+            },
+            {
+                id: 10,
+                titulo: "Questão 10: Apuração do CPV no Custeio por Absorção",
+                tag: "Demonstrações Contábeis",
+                enunciado: "Multiplicar a quantidade de produtos vendidos pelo custo unitário fabril por absorção.",
+                formula: "CPV = Volume Vendido × Custo Unitário de Produção",
+                inputs: [
+                    { id: "q10_unit", label: "Custo Unitário Pleno (R$)", default: "95,00" },
+                    { id: "q10_vend", label: "Volume Vendido (un)", default: "3.000" }
+                ],
+                calcular: function() {
+                    const unit = parseBR(document.getElementById('q10_unit').value);
+                    const vend = parseBR(document.getElementById('q10_vend').value);
+                    const cpv = unit * vend;
+                    return {
+                        steps: [
+                            `Passo 1: Reconhecer o custo de saída de estoque: CPV = Unidades Vendidas × Custo Unitário`,
+                            `Passo 2: Substituir: CPV = ${formatNumero(vend, 0)} unidades × ${formatMoeda(unit)}`,
+                            `Passo 3: Calcular o CPV a debitar na DRE: CPV = ${formatMoeda(cpv)}`
+                        ],
+                        resultado: formatMoeda(cpv),
+                        nota: `Cumprimento do Princípio da Competência: o custo confronta a receita de venda no mesmo período.`
+                    };
+                }
+            },
+            {
+                id: 11,
+                titulo: "Questão 11: Valoração do Estoque Final de Acabados (CPC 16)",
+                tag: "Normas Contábeis",
+                enunciado: "Calcular o valor contábil das peças restantes em armazém multiplicando o saldo pelo custo unitário.",
+                formula: "Estoque Final = Unidades em Estoque × Custo Unitário Integral",
+                inputs: [
+                    { id: "q11_unit", label: "Custo Unitário Fabril (R$)", default: "80,00" },
+                    { id: "q11_fab", label: "Produção Total (un)", default: "5.000" },
+                    { id: "q11_vend", label: "Vendas do Mês (un)", default: "4.200" }
+                ],
+                calcular: function() {
+                    const unit = parseBR(document.getElementById('q11_unit').value);
+                    const fab = parseBR(document.getElementById('q11_fab').value);
+                    const vend = parseBR(document.getElementById('q11_vend').value);
+                    const saldo = Math.max(0, fab - vend);
+                    const valorEstoque = saldo * unit;
+                    return {
+                        steps: [
+                            `Passo 1: Apurar o saldo físico de peças no almoxarifado: ${formatNumero(fab, 0)} − ${formatNumero(vend, 0)} = ${formatNumero(saldo, 0)} peças`,
+                            `Passo 2: Multiplicar pelo custo unitário por absorção: ${formatNumero(saldo, 0)} peças × ${formatMoeda(unit)}`,
+                            `Passo 3: Valor do Estoque Final no Ativo: ${formatMoeda(valorEstoque)}`
+                        ],
+                        resultado: formatMoeda(valorEstoque),
+                        nota: `Conforme o CPC 16, este valor integrará o Ativo Circulante avaliado pelo custo histórico de produção.`
+                    };
+                }
+            },
+            {
+                id: 12,
+                titulo: "Questão 12: Custo da Ociosidade Fabril Direto na DRE (CPC 16)",
+                tag: "CPC 16 / Ociosidade",
+                enunciado: "Identificar a parcela de custos fixos gerada pela capacidade ociosa para lançar como despesa do período.",
+                formula: "Despesa de Ociosidade = (Custos Fixos ÷ Capacidade Normal) × Unidades Não Produzidas",
+                inputs: [
+                    { id: "q12_cf", label: "Custo Fixo Total (R$)", default: "150.000,00" },
+                    { id: "q12_cap", label: "Capacidade Normal (un)", default: "10.000" },
+                    { id: "q12_real", label: "Produção Realizada (un)", default: "7.000" }
+                ],
+                calcular: function() {
+                    const cf = parseBR(document.getElementById('q12_cf').value);
+                    const cap = parseBR(document.getElementById('q12_cap').value) || 1;
+                    const real = parseBR(document.getElementById('q12_real').value);
+                    const taxaPadrao = cf / cap;
+                    const ociosidade = Math.max(0, cap - real);
+                    const perdaOciosa = taxaPadrao * ociosidade;
+                    return {
+                        steps: [
+                            `Passo 1: Calcular a taxa de absorção na capacidade normal: ${formatMoeda(cf)} ÷ ${formatNumero(cap, 0)} un = ${formatMoeda(taxaPadrao)} / un`,
+                            `Passo 2: Quantidade de capacidade não utilizada: ${formatNumero(cap, 0)} − ${formatNumero(real, 0)} = ${formatNumero(ociosidade, 0)} unidades ociosas`,
+                            `Passo 3: Custo fixo que NÃO pode ir ao estoque (Despesa na DRE): ${formatNumero(ociosidade, 0)} un × ${formatMoeda(taxaPadrao)} = ${formatMoeda(perdaOciosa)}`
+                        ],
+                        resultado: formatMoeda(perdaOciosa),
+                        nota: `O CPC 16 proíbe inflar o custo unitário estocado decorrente de ociosidade operacional anormal.`
+                    };
+                }
+            },
+            {
+                id: 13,
+                titulo: "Questão 13: Arbitramento Fiscal de Estoques (Art. 303 RIR)",
+                tag: "Legislação Tributária",
+                enunciado: "Calcular o valor do estoque arbitrado compulsoriamente pela Receita Federal a 70% do preço de venda.",
+                formula: "Estoque Arbitrado = (Preço de Venda × Qtd. em Estoque) × 70%",
+                inputs: [
+                    { id: "q13_pv", label: "Preço de Venda Unitário (R$)", default: "300,00" },
+                    { id: "q13_qtd", label: "Peças em Estoque (un)", default: "800" },
+                    { id: "q13_perc", label: "Alíquota Fiscal Art. 303 (%)", default: "70,00" }
+                ],
+                calcular: function() {
+                    const pv = parseBR(document.getElementById('q13_pv').value);
+                    const qtd = parseBR(document.getElementById('q13_qtd').value);
+                    const perc = parseBR(document.getElementById('q13_perc').value) / 100;
+                    const valorVenda = pv * qtd;
+                    const arbitrado = valorVenda * perc;
+                    return {
+                        steps: [
+                            `Passo 1: Apurar a receita teórica do estoque: ${formatNumero(qtd, 0)} un × ${formatMoeda(pv)} = ${formatMoeda(valorVenda)}`,
+                            `Passo 2: Aplicar o percentual legal do RIR: ${formatMoeda(valorVenda)} × ${(perc * 100).toFixed(0)}%`,
+                            `Passo 3: Valor arbitrado fiscalmente: ${formatMoeda(arbitrado)}`
+                        ],
+                        resultado: formatMoeda(arbitrado),
+                        nota: `Ocorre quando a indústria não possui contabilidade de custos integrada, gerando acréscimo de IRPJ e multas.`
+                    };
+                }
+            },
+            {
+                id: 14,
+                titulo: "Questão 14: Rateio Terciário - Taxa de CCP por Horas-Máquina",
+                tag: "Rateio Terciário",
+                enunciado: "Calcular a taxa do centro produtivo dividindo seu saldo final acumulado pelas horas operadas.",
+                formula: "Taxa do CCP = Saldo Total do Centro ÷ Horas-Máquina do Centro",
+                inputs: [
+                    { id: "q14_saldo", label: "Saldo Acumulado do CCP (R$)", default: "84.000,00" },
+                    { id: "q14_hm", label: "Horas-Máquina do Setor (h)", default: "1.400" }
+                ],
+                calcular: function() {
+                    const saldo = parseBR(document.getElementById('q14_saldo').value);
+                    const hm = parseBR(document.getElementById('q14_hm').value) || 1;
+                    const taxa = saldo / hm;
+                    return {
+                        steps: [
+                            `Passo 1: Equação do Rateio Terciário: Taxa CCP = Saldo Consolidado ÷ Base do Centro`,
+                            `Passo 2: Substituir: Taxa CCP = ${formatMoeda(saldo)} ÷ ${formatNumero(hm, 0)} H/M`,
+                            `Passo 3: Taxa de aplicação direta aos produtos: Taxa CCP = ${formatMoeda(taxa)} por H/M`
+                        ],
+                        resultado: `${formatMoeda(taxa)} / H/M`,
+                        nota: `Essa taxa absorve os custos primários e secundários que chegaram ao centro produtivo.`
+                    };
+                }
+            },
+            {
+                id: 15,
+                titulo: "Questão 15: Rateio Primário de Energia por Potência (kW)",
+                tag: "Rateio Primário",
+                enunciado: "Distribuir a fatura de força motriz proporcionalmente à potência instalada dos motores em cada centro.",
+                formula: "Energia Alocada = Fatura Total × (Potência do Setor ÷ Potência Total)",
+                inputs: [
+                    { id: "q15_fat", label: "Fatura de Energia (R$)", default: "50.000,00" },
+                    { id: "q15_kwset", label: "Potência Usinagem (kW)", default: "160" },
+                    { id: "q15_kwtot", label: "Potência Total da Fábrica (kW)", default: "400" }
+                ],
+                calcular: function() {
+                    const fat = parseBR(document.getElementById('q15_fat').value);
+                    const kwSet = parseBR(document.getElementById('q15_kwset').value);
+                    const kwTot = parseBR(document.getElementById('q15_kwtot').value) || 1;
+                    const taxaKw = fat / kwTot;
+                    const alocado = taxaKw * kwSet;
+                    return {
+                        steps: [
+                            `Passo 1: Calcular o custo por kW instalado: ${formatMoeda(fat)} ÷ ${formatNumero(kwTot, 0)} kW = ${formatMoeda(taxaKw)} / kW`,
+                            `Passo 2: Multiplicar pela potência da Usinagem: ${formatNumero(kwSet, 0)} kW × ${formatMoeda(taxaKw)}`,
+                            `Passo 3: Valor alocado no Rateio Primário: ${formatMoeda(alocado)}`
+                        ],
+                        resultado: formatMoeda(alocado),
+                        nota: `Critério técnico superior à simples divisão linear ou por metros quadrados.`
+                    };
+                }
+            },
+            {
+                id: 16,
+                titulo: "Questão 16: Lucro Bruto Operacional por Absorção",
+                tag: "DRE Societária",
+                enunciado: "Deduzir o CPV da Receita Líquida de Vendas para apurar o Lucro Bruto.",
+                formula: "Lucro Bruto = Receita Líquida de Vendas − CPV",
+                inputs: [
+                    { id: "q16_rec", label: "Receita Líquida de Vendas (R$)", default: "450.000,00" },
+                    { id: "q16_cpv", label: "CPV Consolidado (R$)", default: "260.000,00" }
+                ],
+                calcular: function() {
+                    const rec = parseBR(document.getElementById('q16_rec').value);
+                    const cpv = parseBR(document.getElementById('q16_cpv').value);
+                    const lucroBruto = rec - cpv;
+                    return {
+                        steps: [
+                            `Passo 1: Fórmula do Lucro Bruto na DRE: Lucro Bruto = Receita Líquida − CPV`,
+                            `Passo 2: Substituir: Lucro Bruto = ${formatMoeda(rec)} − ${formatMoeda(cpv)}`,
+                            `Passo 3: Calcular o Lucro Bruto Fabril: ${formatMoeda(lucroBruto)}`
+                        ],
+                        resultado: formatMoeda(lucroBruto),
+                        nota: `Deste Lucro Bruto é que serão deduzidas as Despesas Operacionais (Administrativas e Comerciais).`
+                    };
+                }
+            },
+            {
+                id: 17,
+                titulo: "Questão 17: Expurgo de Despesas da Composição do CPP",
+                tag: "Fronteira Fabril",
+                enunciado: "Somar os custos de fábrica (MP + MOD + CIF) excluindo despesas administrativas e comerciais.",
+                formula: "CPP = Matéria-Prima + MOD + CIF (Sem Despesas)",
+                inputs: [
+                    { id: "q17_mp", label: "Matéria-Prima (R$)", default: "55.000,00" },
+                    { id: "q17_mod", label: "MOD (R$)", default: "35.000,00" },
+                    { id: "q17_cif", label: "CIF (R$)", default: "25.000,00" },
+                    { id: "q17_adm", label: "Despesa Adm (R$) [Excluir]", default: "20.000,00" },
+                    { id: "q17_com", label: "Comissões (R$) [Excluir]", default: "12.000,00" }
+                ],
+                calcular: function() {
+                    const mp = parseBR(document.getElementById('q17_mp').value);
+                    const mod = parseBR(document.getElementById('q17_mod').value);
+                    const cif = parseBR(document.getElementById('q17_cif').value);
+                    const adm = parseBR(document.getElementById('q17_adm').value);
+                    const com = parseBR(document.getElementById('q17_com').value);
+                    const cpp = mp + mod + cif;
+                    return {
+                        steps: [
+                            `Passo 1: Selecionar apenas dispêndios fabris: MP (${formatMoeda(mp)}) + MOD (${formatMoeda(mod)}) + CIF (${formatMoeda(cif)})`,
+                            `Passo 2: Excluir Despesas: Adm (${formatMoeda(adm)}) e Comissões (${formatMoeda(com)}) vão direto para a DRE`,
+                            `Passo 3: Somar os custos autênticos: CPP = ${formatMoeda(cpp)}`
+                        ],
+                        resultado: formatMoeda(cpp),
+                        nota: `Erro clássico de gestão: incorporar despesas administrativas ao custo do produto viola a legislação societária.`
+                    };
+                }
+            },
+            {
+                id: 18,
+                titulo: "Questão 18: Taxa Horária de Mão de Obra Direta (MOD)",
+                tag: "Composição de MOD",
+                enunciado: "Dividir a folha de pagamento fabril com encargos pelo número de horas diretas trabalhadas.",
+                formula: "Taxa Horária MOD = Total da Folha com Encargos ÷ Horas Efetivas Apontadas",
+                inputs: [
+                    { id: "q18_folha", label: "Folha MOD com Encargos (R$)", default: "72.000,00" },
+                    { id: "q18_horas", label: "Total Horas Apontadas (h)", default: "2.400" }
+                ],
+                calcular: function() {
+                    const folha = parseBR(document.getElementById('q18_folha').value);
+                    const horas = parseBR(document.getElementById('q18_horas').value) || 1;
+                    const taxaMod = folha / horas;
+                    return {
+                        steps: [
+                            `Passo 1: Relação de custo horário: Taxa MOD = Custo Total da Folha ÷ Horas Trabalhadas`,
+                            `Passo 2: Substituir: Taxa MOD = ${formatMoeda(folha)} ÷ ${formatNumero(horas, 0)} horas`,
+                            `Passo 3: Calcular a taxa: Taxa MOD = ${formatMoeda(taxaMod)} por hora de MOD`
+                        ],
+                        resultado: `${formatMoeda(taxaMod)} / h`,
+                        nota: `Esta taxa é multiplicada pelas horas registradas na folha de apontamento de cada ordem de produção.`
+                    };
+                }
+            },
+            {
+                id: 19,
+                titulo: "Questão 19: Apropriação de CIF com Base em Horas de MOD",
+                tag: "Distorções de Rateio",
+                enunciado: "Multiplicar a taxa horária de MOD pelo total de horas consumidas pelo produto.",
+                formula: "CIF Absorvido = Horas de MOD Consumidas × Taxa de Rateio",
+                inputs: [
+                    { id: "q19_taxa", label: "Taxa Rateio H/MOD (R$/h)", default: "22,50" },
+                    { id: "q19_horas", label: "Horas de MOD Utilizadas (h)", default: "1.200" }
+                ],
+                calcular: function() {
+                    const taxa = parseBR(document.getElementById('q19_taxa').value);
+                    const horas = parseBR(document.getElementById('q19_horas').value);
+                    const cif = taxa * horas;
+                    return {
+                        steps: [
+                            `Passo 1: Apropriação proporcional: CIF = Horas Trabalhadas × Taxa Unitária`,
+                            `Passo 2: Substituir: CIF = ${formatNumero(horas, 0)} h × ${formatMoeda(taxa)}`,
+                            `Passo 3: Totalizar o CIF transferido: CIF = ${formatMoeda(cif)}`
+                        ],
+                        resultado: formatMoeda(cif),
+                        nota: `Se o produto passar por processos robotizados, essa base tenderá a subestimar seu custo real.`
+                    };
+                }
+            },
+            {
+                id: 20,
+                titulo: "Questão 20: Rateio em Cascata (Step-Down) - Administração Fabril",
+                tag: "Método Step-Down",
+                enunciado: "Encerrar o primeiro centro de serviços distribuindo seu saldo aos demais centros pelo headcount.",
+                formula: "Repasse à Manutenção = Saldo Adm Fabril × (Funcionários Manutenção ÷ Total de Funcionários)",
+                inputs: [
+                    { id: "q20_saldo", label: "Saldo Administração Fabril (R$)", default: "60.000,00" },
+                    { id: "q20_fman", label: "Funcionários da Manutenção", default: "15" },
+                    { id: "q20_ftot", label: "Total de Funcionários Fábrica", default: "100" }
+                ],
+                calcular: function() {
+                    const saldo = parseBR(document.getElementById('q20_saldo').value);
+                    const fMan = parseBR(document.getElementById('q20_fman').value);
+                    const fTot = parseBR(document.getElementById('q20_ftot').value) || 1;
+                    const taxaFunc = saldo / fTot;
+                    const repasse = taxaFunc * fMan;
+                    return {
+                        steps: [
+                            `Passo 1: Custo da Administração por funcionário: ${formatMoeda(saldo)} ÷ ${formatNumero(fTot, 0)} colaboradores = ${formatMoeda(taxaFunc)} / colaborador`,
+                            `Passo 2: Multiplicar pelo quadro da Manutenção: ${formatNumero(fMan, 0)} colaboradores × ${formatMoeda(taxaFunc)}`,
+                            `Passo 3: Valor transferido para o Centro de Manutenção: ${formatMoeda(repasse)}`
+                        ],
+                        resultado: formatMoeda(repasse),
+                        nota: `No método Step-Down, uma vez zerada a Administração Fabril, ela não recebe mais retornos de custos de nenhum centro.`
+                    };
+                }
+            }
+        ];
+
+        function renderizarPainel() {
+            const navContainer = document.getElementById('navButtonsContainer');
+            const solversContainer = document.getElementById('solversContainer');
+
+            navContainer.innerHTML = '';
+            solversContainer.innerHTML = '';
+
+            questoesConfig.forEach(q => {
+                const navBtn = document.createElement('a');
+                navBtn.className = 'nav-btn';
+                navBtn.href = `#qcard-${q.id}`;
+                navBtn.innerText = `Q${q.id}`;
+                navContainer.appendChild(navBtn);
+
+                const inputsHTML = q.inputs.map(inp => `
+                    <div class="form-group">
+                        <label class="form-label" for="${inp.id}">${inp.label}</label>
+                        <input type="text" id="${inp.id}" class="form-control" value="${inp.default}" oninput="resolverQuestao(${q.id})">
+                    </div>
+                `).join('');
+
+                const cardHTML = `
+                    <div class="solver-card" id="qcard-${q.id}">
+                        <div class="card-header-flex">
+                            <div>
+                                <h2 class="card-q-title">${q.titulo}</h2>
+                                <span style="font-size:0.85rem; color:var(--text-muted);">${q.enunciado}</span>
+                            </div>
+                            <span class="card-q-tag">${q.tag}</span>
+                        </div>
+
+                        <div class="inputs-section">
+                            <div class="inputs-section-title">Parâmetros Operacionais (Altere em tempo real):</div>
+                            <div class="inputs-grid">
+                                ${inputsHTML}
+                            </div>
+                        </div>
+
+                        <div class="solution-box">
+                            <div class="solution-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                Resolução Passo a Passo e Memória de Cálculo
+                            </div>
+
+                            <div class="formula-line" id="formula-q${q.id}">${q.formula}</div>
+
+                            <ul class="step-list" id="steps-q${q.id}"></ul>
+
+                            <div class="res-final-box">
+                                <div>
+                                    <span class="res-final-label">Resultado Final Apurado</span>
+                                    <div class="res-final-value" id="res-q${q.id}">R$ 0,00</div>
+                                </div>
+                                <div style="font-size:0.85rem; color:rgba(255,255,255,0.7); text-align:right;">
+                                    Memória em Tempo Real
+                                </div>
+                            </div>
+
+                            <div class="pedagogic-note" id="note-q${q.id}"></div>
+                        </div>
+                    </div>
+                `;
+                solversContainer.innerHTML += cardHTML;
+            });
+
+            document.querySelectorAll('.form-control').forEach(input => {
+                aplicarMascara(input);
+            });
+
+            questoesConfig.forEach(q => resolverQuestao(q.id));
+        }
+
+        function resolverQuestao(id) {
+            const q = questoesConfig.find(item => item.id === id);
+            if (!q) return;
+
+            const res = q.calcular();
+            const stepsEl = document.getElementById(`steps-q${id}`);
+            const resEl = document.getElementById(`res-q${id}`);
+            const noteEl = document.getElementById(`note-q${id}`);
+
+            if (stepsEl) {
+                stepsEl.innerHTML = res.steps.map(s => `<li class="step-item">• ${s}</li>`).join('');
+            }
+            if (resEl) {
+                resEl.innerText = res.resultado;
+            }
+            if (noteEl) {
+                noteEl.innerHTML = `<strong>Dica Pedagógica em Sala:</strong> ${res.nota}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderizarPainel();
+        });
+    </script>
+</body>
+</html>

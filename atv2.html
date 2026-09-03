@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Custeio por Absorção e Rateios | CEST Anil</title>
+    <style>
+        :root {
+            --primary: #002060;
+            --primary-dark: #001138;
+            --primary-light: #003399;
+            --secondary: #0080FF;
+            --secondary-light: #E6F2FF;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --background: #F4F7FA;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --radius-md: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 32, 96, 0.05);
+            --shadow-md: 0 4px 20px -2px rgba(0, 32, 96, 0.08);
+            --font-mono: "SFMono-Regular", Consolas, Menlo, monospace;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            padding: 3rem 2rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-sub {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .ident-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.15);
+        }
+
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .glossary-list {
+            list-style: none;
+        }
+
+        .glossary-list li {
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+        }
+
+        .glossary-list strong {
+            color: var(--secondary);
+            background: var(--secondary-light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .formula-box {
+            background: var(--background);
+            padding: 0.85rem 1rem;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: 0.3s;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .question-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .q-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .q-target {
+            font-size: 0.75rem;
+            background: var(--secondary-light);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .q-data {
+            background: #F8FAFC;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: 1px dashed var(--border);
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .q-data-item {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .q-data-item strong {
+            color: var(--primary);
+        }
+
+        .answer-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .currency-prefix {
+            position: absolute;
+            left: 12px;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .answer-input {
+            width: 220px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-family: var(--font-mono);
+        }
+
+        .answer-input.no-prefix {
+            padding-left: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-check {
+            background: var(--surface);
+            color: var(--primary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-check:hover {
+            border-color: var(--secondary);
+            background: var(--secondary-light);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: var(--success-light);
+            color: #064E3B;
+            border: 1px solid #6EE7B7;
+        }
+
+        .feedback.incorrect {
+            display: block;
+            background: var(--danger-light);
+            color: #7F1D1D;
+            border: 1px solid #FCA5A5;
+        }
+
+        .feedback-sub {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: inherit;
+        }
+
+        .final-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+        }
+
+        .score-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .score-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        @media print {
+            body { background: #FFFFFF; }
+            .container { padding: 0; max-width: 100%; }
+            header, .btn, .final-controls { display: none !important; }
+            .question-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #000;
+                margin-bottom: 10px;
+                padding: 15px;
+            }
+            .q-data { border: 1px solid #ccc; }
+            .print-header { display: block !important; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+            .feedback { display: block !important; border: 1px solid #000 !important; }
+        }
+
+        .print-header { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="print-header">
+        <h2>CEST - Centro Universitário Santa Terezinha</h2>
+        <h3>Disciplina: Gestão de Custos - Prof. Msc. Philipe Sampaio Lima</h3>
+        <p><strong>Caderno de Atividades Práticas: Custeio por Absorção e Rateios</strong></p>
+    </div>
+
+    <div class="container">
+        
+        <header>
+            <div class="header-title">Laboratório de Gestão de Custos</div>
+            <div class="header-sub">Lista Prática Dinâmica: Custeio por Absorção e Departamentalização • CEST Anil</div>
+            <p style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.9;">
+                Prof. Msc. Philipe Sampaio Lima | 4º Período de Administração
+            </p>
+        </header>
+
+        <div class="card">
+            <h2 class="card-title">1. Identificação do Aluno</h2>
+            <div class="ident-grid">
+                <div class="form-group">
+                    <label class="form-label" for="alunoNome">Nome Completo *</label>
+                    <input type="text" id="alunoNome" class="form-control" placeholder="Digite seu nome completo..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="alunoMatricula">Matrícula / Turma</label>
+                    <input type="text" id="alunoMatricula" class="form-control" placeholder="Ex: ADM-04">
+                </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--danger); margin-top: 1rem; font-weight: 600;">
+                Aviso: Preencha seu nome para que o relatório PDF seja gerado e validado com a sua identificação.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">2. Glossário Operacional e Fórmulas de Rateio</h2>
+            <div class="glossary-grid">
+                <div>
+                    <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.75rem;">Siglas e Conceitos</h3>
+                    <ul class="glossary-list">
+                        <li><strong>CIF</strong> Custos Indiretos de Fabricação</li>
+                        <li><strong>H/M</strong> Horas-Máquina</li>
+                        <li><strong>H/MOD</strong> Horas de Mão de Obra Direta</li>
+                        <li><strong>CCP</strong> Centro de Custo Produtivo</li>
+                        <li><strong>CCA</strong> Centro de Custo de Apoio / Serviços</li>
+                        <li><strong>Full Costing</strong> Custeio por Absorção Integral</li>
+                        <li><strong>CPV</strong> Custo dos Produtos Vendidos</li>
+                        <li><strong>CPC 16</strong> Norma Técnica de Valoração de Estoques</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.75rem;">Equações de Custeio por Absorção</h3>
+                    <div class="formula-box">Taxa de Rateio = CIF Total ÷ Total da Base Escolhida</div>
+                    <div class="formula-box">CIF do Produto = Horas Consumidas × Taxa de Rateio</div>
+                    <div class="formula-box">Custo Unitário = (MP + MOD + CIF Rateado) ÷ Volume</div>
+                    <div class="formula-box">Estoque Final = (Produção − Vendas) × Custo Unitário</div>
+                    <div class="formula-box">CPV = Volume Vendido × Custo Unitário</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="questionsContainer"></div>
+
+        <div class="final-controls">
+            <div class="score-box">
+                <span class="score-label">Pontuação Atual</span>
+                <div class="score-value"><span id="lblAcertos">0</span> / 20</div>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-check" onclick="verificarTodas()">Verificar Todas as Respostas</button>
+                <button class="btn btn-primary" onclick="exportarPDF()">Exportar PDF Oficial</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function formatMoeda(num) {
+            return "R$ " + num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatNumero(num) {
+            return num.toLocaleString('pt-BR');
+        }
+
+        function parseBR(val) {
+            if (!val) return 0;
+            const limpo = val.toString().trim().replace(/\./g, '').replace(',', '.');
+            return parseFloat(limpo) || 0;
+        }
+
+        function randRange(min, max, step = 1) {
+            const steps = Math.floor((max - min) / step);
+            return min + Math.floor(Math.random() * (steps + 1)) * step;
+        }
+
+        function aplicarMascaraNumerica(inputElement) {
+            inputElement.addEventListener('input', function(e) {
+                let v = e.target.value;
+                v = v.replace(/[^\d,]/g, "");
+                let parts = v.split(',');
+                if (parts.length > 2) {
+                    v = parts[0] + ',' + parts.slice(1).join('');
+                }
+                e.target.value = v;
+            });
+        }
+
+        let questoes = [];
+
+        function gerarQuestoes() {
+            questoes = [];
+
+            // Q1: Taxa de Rateio Global por H/M
+            let cif1 = randRange(60000, 150000, 5000);
+            let hm1 = randRange(2000, 5000, 200);
+            questoes.push({
+                id: 1, topico: "Taxa de Rateio de CIF",
+                enunciado: `Uma indústria química incorreu em ${formatMoeda(cif1)} de Custos Indiretos de Fabricação (energia fabril, supervisão e aluguel da fábrica). A base técnica definida pelo conselho de gestão foi o total de Horas-Máquina, computada em ${formatNumero(hm1)} H/M no mês. Calcule a <strong>Taxa de Aplicação do CIF por Hora-Máquina</strong>.`,
+                dados: [{ l: 'CIF Total', v: formatMoeda(cif1) }, { l: 'Total Horas-Máquina', v: `${formatNumero(hm1)} H/M` }],
+                prefixo: 'R$', respReal: cif1 / hm1
+            });
+
+            // Q2: Rateio de CIF em Lote Específico
+            let taxa2 = randRange(20, 60, 2);
+            let hmCons2 = randRange(300, 800, 20);
+            questoes.push({
+                id: 2, topico: "Apropriação de CIF",
+                enunciado: `A taxa horária de custos indiretos foi fixada em ${formatMoeda(taxa2)} por hora-máquina. Para usinar um lote de eixos de transmissão, as máquinas operaram ininterruptamente por ${formatNumero(hmCons2)} horas. Qual o <strong>valor do CIF total absorvido</strong> por esse lote?`,
+                dados: [{ l: 'Taxa Horária CIF', v: formatMoeda(taxa2) }, { l: 'Horas-Máquina Consumidas', v: `${formatNumero(hmCons2)} H/M` }],
+                prefixo: 'R$', respReal: taxa2 * hmCons2
+            });
+
+            // Q3: Custo Fabril Unitário por Absorção
+            let mp3 = randRange(35, 75, 5);
+            let mod3 = randRange(20, 45, 5);
+            let cif3 = randRange(15, 40, 5);
+            questoes.push({
+                id: 3, topico: "Full Costing Unitário",
+                enunciado: `Um fabricante de motores calculou os seguintes custos diretos e indiretos para cada unidade do Modelo M-1: Matéria-Prima Direta = ${formatMoeda(mp3)}; Mão de Obra Direta = ${formatMoeda(mod3)}; e CIF rateado absorvido = ${formatMoeda(cif3)}. Qual o <strong>Custo Fabril Unitário Pleno (Full Costing)</strong> desse produto?`,
+                dados: [{ l: 'Matéria-Prima Direta', v: formatMoeda(mp3) }, { l: 'MOD Direta', v: formatMoeda(mod3) }, { l: 'CIF Rateado', v: formatMoeda(cif3) }],
+                prefixo: 'R$', respReal: mp3 + mod3 + cif3
+            });
+
+            // Q4: Rateio Proporcional à Matéria-Prima
+            let cif4 = randRange(80000, 160000, 10000);
+            let mpAlfa4 = randRange(60000, 100000, 5000);
+            let mpBeta4 = randRange(40000, 60000, 5000);
+            let totalMp4 = mpAlfa4 + mpBeta4;
+            questoes.push({
+                id: 4, topico: "Bases Financeiras de Rateio",
+                enunciado: `O CIF consolidado de ${formatMoeda(cif4)} deve ser rateado proporcionalmente ao Custo de Matéria-Prima consumida. O Produto Alfa consumiu ${formatMoeda(mpAlfa4)} de MP e o Produto Beta consumiu ${formatMoeda(mpBeta4)}. Qual o <strong>CIF atribuído ao Produto Alfa</strong>?`,
+                dados: [{ l: 'CIF Total', v: formatMoeda(cif4) }, { l: 'MP Produto Alfa', v: formatMoeda(mpAlfa4) }, { l: 'MP Produto Beta', v: formatMoeda(mpBeta4) }],
+                prefixo: 'R$', respReal: cif4 * (mpAlfa4 / totalMp4)
+            });
+
+            // Q5: Rateio Secundário - Manutenção para Usinagem
+            let custoMan5 = randRange(30000, 70000, 2000);
+            let hUsi5 = randRange(600, 1200, 50);
+            let hMon5 = randRange(200, 400, 50);
+            let totalH5 = hUsi5 + hMon5;
+            questoes.push({
+                id: 5, topico: "Rateio Secundário Departamental",
+                enunciado: `O Centro de Custo de Apoio "Manutenção Geral" acumulou ${formatMoeda(custoMan5)} e prestou serviços de reparo aos centros produtivos: ${formatNumero(hUsi5)} horas para Usinagem e ${formatNumero(hMon5)} horas para Montagem. Pelo Método Direto, qual valor será <strong>repassado à Usinagem</strong>?`,
+                dados: [{ l: 'Custo Manutenção (Apoio)', v: formatMoeda(custoMan5) }, { l: 'Horas Usinagem (Produtivo)', v: `${formatNumero(hUsi5)} h` }, { l: 'Horas Montagem (Produtivo)', v: `${formatNumero(hMon5)} h` }],
+                prefixo: 'R$', respReal: custoMan5 * (hUsi5 / totalH5)
+            });
+
+            // Q6: Rateio Secundário - Almoxarifado para Produtivos
+            let custoAlm6 = randRange(20000, 50000, 2000);
+            let reqA6 = randRange(50, 90, 5);
+            let reqB6 = randRange(30, 60, 5);
+            let totalReq6 = reqA6 + reqB6;
+            questoes.push({
+                id: 6, topico: "Rateio Secundário Departamental",
+                enunciado: `O Almoxarifado Central (Centro de Apoio) registrou gastos de ${formatMoeda(custoAlm6)}. No período, atendeu 100% de requisições produtivas: ${reqA6} para Estamparia e ${reqB6} para Pintura. Qual valor de custos do Almoxarifado será <strong>transferido para a Estamparia</strong>?`,
+                dados: [{ l: 'Custo Almoxarifado', v: formatMoeda(custoAlm6) }, { l: 'Requisições Estamparia', v: `${reqA6} req` }, { l: 'Requisições Pintura', v: `${reqB6} req` }],
+                prefixo: 'R$', respReal: custoAlm6 * (reqA6 / totalReq6)
+            });
+
+            // Q7: Rateio Primário por Área (Aluguel Fabril)
+            let aluguel7 = randRange(40000, 90000, 5000);
+            let m2Usi7 = randRange(800, 1500, 100);
+            let m2Total7 = randRange(2500, 4000, 100);
+            questoes.push({
+                id: 7, topico: "Rateio Primário",
+                enunciado: `A fábrica possui área construída total de ${formatNumero(m2Total7)} m² e incorre em ${formatMoeda(aluguel7)} de aluguel fabril. O departamento de Usinagem ocupa exatamente ${formatNumero(m2Usi7)} m². Qual valor de aluguel deve ser <strong>alocado ao departamento de Usinagem</strong> no Rateio Primário?`,
+                dados: [{ l: 'Aluguel Fabril Total', v: formatMoeda(aluguel7) }, { l: 'Área da Usinagem', v: `${formatNumero(m2Usi7)} m²` }, { l: 'Área Total Fábrica', v: `${formatNumero(m2Total7)} m²` }],
+                prefixo: 'R$', respReal: aluguel7 * (m2Usi7 / m2Total7)
+            });
+
+            // Q8: Diluição de Custo Fixo Unitário
+            let cfTotal8 = randRange(120000, 240000, 10000);
+            let vol8 = randRange(4000, 8000, 500);
+            questoes.push({
+                id: 8, topico: "Diluição de Custos Fixos",
+                enunciado: `Uma indústria tem Custos Fixos de Fabricação estipulados em ${formatMoeda(cfTotal8)} por mês. Ao programar uma produção mensal de ${formatNumero(vol8)} unidades, qual será a <strong>parcela de Custo Fixo absorvida por cada unidade</strong> fabricada?`,
+                dados: [{ l: 'Custo Fixo Total', v: formatMoeda(cfTotal8) }, { l: 'Produção Prevista', v: `${formatNumero(vol8)} un` }],
+                prefixo: 'R$', respReal: cfTotal8 / vol8
+            });
+
+            // Q9: Efeito Volume no Lucro (Custos Retidos no Estoque)
+            let cf9 = randRange(80000, 140000, 5000);
+            let fab9 = randRange(5000, 10000, 1000);
+            let vend9 = fab9 - randRange(1000, 3000, 500);
+            let cfuFixo = cf9 / fab9;
+            let sobra9 = fab9 - vend9;
+            questoes.push({
+                id: 9, topico: "Custos Fixos no Balanço",
+                enunciado: `A fábrica incorreu em ${formatMoeda(cf9)} de Custos Fixos no mês, produzindo ${formatNumero(fab9)} unidades. Foram vendidas ${formatNumero(vend9)} unidades. Qual o montante exato de <strong>Custos Fixos retido no Ativo (Estoque Final)</strong> que não impactou a DRE corrente?`,
+                dados: [{ l: 'Custo Fixo Total', v: formatMoeda(cf9) }, { l: 'Unidades Produzidas', v: `${formatNumero(fab9)} un` }, { l: 'Unidades Vendidas', v: `${formatNumero(vend9)} un` }],
+                prefixo: 'R$', respReal: cfuFixo * sobra9
+            });
+
+            // Q10: CPV no Custeio por Absorção
+            let unitFab10 = randRange(60, 140, 5);
+            let qtdVend10 = randRange(1500, 4500, 250);
+            questoes.push({
+                id: 10, topico: "Custo dos Produtos Vendidos (CPV)",
+                enunciado: `O custo unitário de fabricação por absorção (MP + MOD + CIF) apurado para a produção do mês foi de ${formatMoeda(unitFab10)}. Se o setor de expedição confirmou a venda e entrega de ${formatNumero(qtdVend10)} unidades, qual o valor do <strong>CPV debitado na DRE</strong>?`,
+                dados: [{ l: 'Custo Unitário Pleno', v: formatMoeda(unitFab10) }, { l: 'Volume Vendido', v: `${formatNumero(qtdVend10)} un` }],
+                prefixo: 'R$', respReal: unitFab10 * qtdVend10
+            });
+
+            // Q11: Valor do Estoque Final no Balanço Patrimonial
+            let unitFab11 = randRange(50, 110, 5);
+            let prod11 = randRange(3000, 6000, 500);
+            let vend11 = prod11 - randRange(400, 1200, 100);
+            let sobra11 = prod11 - vend11;
+            questoes.push({
+                id: 11, topico: "Valoração de Estoques (CPC 16)",
+                enunciado: `Uma montadora produziu ${formatNumero(prod11)} unidades com custo unitário integral de ${formatMoeda(unitFab11)}. O departamento comercial vendeu ${formatNumero(vend11)} unidades. Em conformidade com o CPC 16, qual o valor monetário do <strong>Estoque Final de Produtos Acabados no Ativo</strong>?`,
+                dados: [{ l: 'Custo Unitário Integral', v: formatMoeda(unitFab11) }, { l: 'Qtd. Produzida', v: `${formatNumero(prod11)} un` }, { l: 'Qtd. Vendida', v: `${formatNumero(vend11)} un` }],
+                prefixo: 'R$', respReal: unitFab11 * sobra11
+            });
+
+            // Q12: Ociosidade Fabril na DRE (CPC 16)
+            let cfNormal12 = randRange(100000, 200000, 10000);
+            let capNormal12 = 10000;
+            let prodReal12 = randRange(6000, 8500, 500);
+            let ociosas12 = capNormal12 - prodReal12;
+            let taxaFixa12 = cfNormal12 / capNormal12;
+            questoes.push({
+                id: 12, topico: "Ociosidade e CPC 16",
+                enunciado: `Uma fábrica possui Custo Fixo de ${formatMoeda(cfNormal12)} para uma capacidade normal de 10.000 unidades. Em razão da crise de demanda, produziu apenas ${formatNumero(prodReal12)} unidades. Qual o valor do Custo Fixo Ocioso que <strong>DEVE ser lançado direto como despesa do período na DRE</strong> (sem incorporar ao estoque)?`,
+                dados: [{ l: 'Custo Fixo Total', v: formatMoeda(cfNormal12) }, { l: 'Capacidade Normal', v: '10.000 un' }, { l: 'Produção Efetiva', v: `${formatNumero(prodReal12)} un` }],
+                prefixo: 'R$', respReal: taxaFixa12 * ociosas12
+            });
+
+            // Q13: Arbitramento de Estoque Fiscal (Art. 303 RIR)
+            let precoVenda13 = randRange(200, 450, 10);
+            let qtdEstoque13 = randRange(500, 1200, 50);
+            let valorVendaTotal13 = precoVenda13 * qtdEstoque13;
+            questoes.push({
+                id: 13, topico: "Legislação Fiscal e RIR",
+                enunciado: `Em fiscalização do IRPJ, a Receita Federal arbitrou o estoque final de produtos acabados de uma indústria desprovida de escrituração integrada de custos (Art. 303 do RIR: 70% do maior preço de venda). Sabendo que restaram ${formatNumero(qtdEstoque13)} peças em estoque e o preço de venda é de ${formatMoeda(precoVenda13)}, qual foi o <strong>valor total do estoque arbitrado pelo Fisco</strong>?`,
+                dados: [{ l: 'Quantidade em Estoque', v: `${formatNumero(qtdEstoque13)} un` }, { l: 'Preço de Venda Unitário', v: formatMoeda(precoVenda13) }, { l: 'Percentual Legal de Arbitramento', v: '70%' }],
+                prefixo: 'R$', respReal: valorVendaTotal13 * 0.70
+            });
+
+            // Q14: Custo Terciário em Centro Produtivo
+            let saldoCcp14 = randRange(50000, 120000, 5000);
+            let hmCcp14 = randRange(1000, 2500, 100);
+            questoes.push({
+                id: 14, topico: "Rateio Terciário",
+                enunciado: `O Centro Produtivo de Montagem acumulou saldo final de ${formatMoeda(saldoCcp14)} após receber os rateios primários e secundários. Se o centro operou com um total de ${formatNumero(hmCcp14)} Horas-Máquina, qual é a <strong>taxa de aplicação do centro por H/M</strong> para apropriar custos aos produtos finais?`,
+                dados: [{ l: 'Saldo Acumulado no Centro', v: formatMoeda(saldoCcp14) }, { l: 'Horas-Máquina do Centro', v: `${formatNumero(hmCcp14)} H/M` }],
+                prefixo: 'R$', respReal: saldoCcp14 / hmCcp14
+            });
+
+            // Q15: Rateio de Energia por Potência (kW instalados)
+            let energia15 = randRange(35000, 75000, 5000);
+            let kwUsi15 = randRange(120, 240, 10);
+            let kwTotal15 = randRange(300, 500, 20);
+            questoes.push({
+                id: 15, topico: "Rateio Primário Técnico",
+                enunciado: `A conta de energia elétrica fabril de ${formatMoeda(energia15)} é rateada pela potência de carga instalada dos motores (kW). A Usinagem possui ${kwUsi15} kW de potência e a potência total da fábrica soma ${kwTotal15} kW. Qual o <strong>valor de energia elétrica rateado para a Usinagem</strong>?`,
+                dados: [{ l: 'Fatura de Energia Elétrica', v: formatMoeda(energia15) }, { l: 'Potência da Usinagem', v: `${kwUsi15} kW` }, { l: 'Potência Total Fabril', v: `${kwTotal15} kW` }],
+                prefixo: 'R$', respReal: energia15 * (kwUsi15 / kwTotal15)
+            });
+
+            // Q16: Lucro Bruto por Absorção
+            let recVendas16 = randRange(300000, 600000, 20000);
+            let cpv16 = randRange(160000, 320000, 10000);
+            questoes.push({
+                id: 16, topico: "DRE Contábil / Societária",
+                enunciado: `No fechamento trimestral da indústria têxtil, a Receita Líquida de Vendas foi de ${formatMoeda(recVendas16)} e o Custo dos Produtos Vendidos (CPV por absorção) somou ${formatMoeda(cpv16)}. Calcule o <strong>Lucro Bruto Operacional</strong> apurado na DRE societária.`,
+                dados: [{ l: 'Receita Líquida', v: formatMoeda(recVendas16) }, { l: 'CPV Consolidado', v: formatMoeda(cpv16) }],
+                prefixo: 'R$', respReal: recVendas16 - cpv16
+            });
+
+            // Q17: Expurgo de Despesas do Custo do Produto
+            let mp17 = randRange(40000, 70000, 2000);
+            let mod17 = randRange(25000, 45000, 2000);
+            let cif17 = randRange(18000, 35000, 1000);
+            let despAdm17 = randRange(15000, 30000, 1000);
+            let comissao17 = randRange(8000, 16000, 1000);
+            questoes.push({
+                id: 17, topico: "Fronteira Custos vs Despesas",
+                enunciado: `Um analista júnior somou indevidamente os seguintes gastos: MP = ${formatMoeda(mp17)}; MOD = ${formatMoeda(mod17)}; CIF = ${formatMoeda(cif17)}; Despesas Administrativas = ${formatMoeda(despAdm17)}; e Comissões de Vendas = ${formatMoeda(comissao17)}. Aplicando estritamente os princípios do Custeio por Absorção, qual é o <strong>Custo de Produção do Período (CPP) correto</strong>?`,
+                dados: [{ l: 'MP', v: formatMoeda(mp17) }, { l: 'MOD', v: formatMoeda(mod17) }, { l: 'CIF', v: formatMoeda(cif17) }, { l: 'Despesas Adm', v: formatMoeda(despAdm17) }, { l: 'Comissões', v: formatMoeda(comissao17) }],
+                prefixo: 'R$', respReal: mp17 + mod17 + cif17
+            });
+
+            // Q18: Taxa Horária de MOD
+            let folhaMod18 = randRange(45000, 95000, 5000);
+            let horasMod18 = randRange(1500, 3000, 100);
+            questoes.push({
+                id: 18, topico: "Custo Horário de MOD",
+                enunciado: `A folha de pagamento fabril com salários diretos e encargos sociais dos operários somou ${formatMoeda(folhaMod18)}. Sabendo que a equipe totalizou ${formatNumero(horasMod18)} horas produtivas de trabalho apontadas no mês, qual é a <strong>taxa de Custo de MOD por hora trabalhada</strong>?`,
+                dados: [{ l: 'Folha de MOD + Encargos', v: formatMoeda(folhaMod18) }, { l: 'Horas Efetivas de MOD', v: `${formatNumero(horasMod18)} h` }],
+                prefixo: 'R$', respReal: folhaMod18 / horasMod18
+            });
+
+            // Q19: Impacto de Substituição de Base de Rateio
+            let cif19 = 100000;
+            let taxaHmod19 = 20; // 5000 h total
+            let hmodProd19 = randRange(800, 1500, 100);
+            let cifRecebido19 = taxaHmod19 * hmodProd19;
+            questoes.push({
+                id: 19, topico: "Distorções de Rateio",
+                enunciado: `O CIF geral da fábrica é rateado à taxa de ${formatMoeda(taxaHmod19)} por hora de MOD. A linha de montagem manual do Produto Ômega demandou ${formatNumero(hmodProd19)} Horas de MOD no período. Qual foi o <strong>montante de CIF absorvido pelo Produto Ômega</strong> sob essa base?`,
+                dados: [{ l: 'Taxa de Rateio (H/MOD)', v: formatMoeda(taxaHmod19) }, { l: 'Horas de MOD Utilizadas', v: `${formatNumero(hmodProd19)} H/MOD` }],
+                prefixo: 'R$', respReal: cifRecebido19
+            });
+
+            // Q20: Rateio em Cascata (Step-Down)
+            let admFab20 = randRange(40000, 80000, 5000);
+            let funcTotal20 = 100;
+            let funcMan20 = randRange(10, 20, 2);
+            questoes.push({
+                id: 20, topico: "Método Step-Down (Cascata)",
+                enunciado: `No método de rateio em cascata, a Administração Fabril (Centro de Apoio 1 com saldo de ${formatMoeda(admFab20)}) é encerrada em primeiro lugar com base no número total de colaboradores (100 funcionários). O Centro de Manutenção possui ${funcMan20} funcionários. Qual o valor que o Centro de Manutenção <strong>receberá da Administração Fabril antes de repassar seus custos à produção</strong>?`,
+                dados: [{ l: 'Saldo Administração Fabril', v: formatMoeda(admFab20) }, { l: 'Colaboradores Manutenção', v: `${funcMan20} pessoas` }, { l: 'Total Colaboradores Fábrica', v: '100 pessoas' }],
+                prefixo: 'R$', respReal: admFab20 * (funcMan20 / funcTotal20)
+            });
+
+            renderizarQuestoes();
+        }
+
+        function renderizarQuestoes() {
+            const container = document.getElementById("questionsContainer");
+            container.innerHTML = "";
+
+            questoes.forEach(q => {
+                const dadosHTML = q.dados.map(d => `<div class="q-data-item"><span>${d.l}:</span> <strong>${d.v}</strong></div>`).join('');
+                
+                const qHTML = `
+                    <div class="question-card" id="card-${q.id}">
+                        <div class="q-header">
+                            <span class="q-number">Questão ${q.id}</span>
+                            <span class="q-target">${q.topico}</span>
+                        </div>
+                        <p class="q-text">${q.enunciado}</p>
+                        <div class="q-data">${dadosHTML}</div>
+                        
+                        <div class="answer-container">
+                            <div style="font-size: 0.9rem; font-weight: 700; color: var(--primary);">Sua Resposta:</div>
+                            <div class="input-wrapper">
+                                ${q.prefixo ? `<span class="currency-prefix">${q.prefixo}</span>` : ''}
+                                <input type="text" id="input-${q.id}" class="answer-input ${q.prefixo ? '' : 'no-prefix'}" placeholder="Ex: 14500,50">
+                            </div>
+                            <button class="btn btn-check" onclick="verificarQuestao(${q.id})">Verificar</button>
+                        </div>
+                        
+                        <div class="feedback" id="feedback-${q.id}">
+                            <span id="feedTitle-${q.id}"></span>
+                            <div class="feedback-sub" id="feedSub-${q.id}"></div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += qHTML;
+            });
+
+            document.querySelectorAll('.answer-input').forEach(input => {
+                aplicarMascaraNumerica(input);
+            });
+        }
+
+        function verificarQuestao(id) {
+            const q = questoes.find(item => item.id === id);
+            if (!q) return false;
+
+            const inputEl = document.getElementById(`input-${q.id}`);
+            const feedbackEl = document.getElementById(`feedback-${q.id}`);
+            const feedTitle = document.getElementById(`feedTitle-${q.id}`);
+            const feedSub = document.getElementById(`feedSub-${q.id}`);
+
+            const valorUsuario = parseBR(inputEl.value);
+
+            if (inputEl.value.trim() === "") {
+                feedbackEl.className = 'feedback incorrect';
+                feedTitle.innerText = "Atenção: Campo em branco.";
+                feedSub.innerText = "Digite o valor apurado antes de submeter.";
+                return false;
+            }
+
+            const diferenca = Math.abs(valorUsuario - q.respReal);
+            const margem = Math.max(0.05, Math.abs(q.respReal * 0.015));
+            const isCorreto = diferenca <= margem;
+
+            if (isCorreto) {
+                feedbackEl.className = 'feedback correct';
+                feedTitle.innerText = "✅ Correto!";
+                feedSub.innerText = "Seu cálculo atende às normas de apropriação do Custeio por Absorção.";
+                q.status = "Correto";
+            } else {
+                feedbackEl.className = 'feedback incorrect';
+                feedTitle.innerText = "❌ Incorreto.";
+                feedSub.innerText = "Revise os critérios de rateio ou as bases de divisão e tente novamente.";
+                q.status = "Incorreto";
+            }
+
+            atualizarPlacar();
+            return isCorreto;
+        }
+
+        function verificarTodas() {
+            questoes.forEach(q => verificarQuestao(q.id));
+            alert("Todas as questões preenchidas foram verificadas!");
+        }
+
+        function atualizarPlacar() {
+            const acertos = questoes.filter(q => q.status === "Correto").length;
+            document.getElementById("lblAcertos").innerText = acertos;
+        }
+
+        function exportarPDF() {
+            const nomeAluno = document.getElementById("alunoNome").value.trim();
+            if (!nomeAluno) {
+                alert("Preenchimento obrigatório: informe seu Nome Completo no cabeçalho antes de exportar.");
+                document.getElementById("alunoNome").focus();
+                window.scrollTo(0, 0);
+                return;
+            }
+
+            questoes.forEach(q => {
+                const inputEl = document.getElementById(`input-${q.id}`);
+                if (inputEl && inputEl.value.trim() !== '') {
+                    verificarQuestao(q.id);
+                } else {
+                    const feedbackEl = document.getElementById(`feedback-${q.id}`);
+                    feedbackEl.className = 'feedback';
+                    feedbackEl.style.display = 'block';
+                    feedbackEl.style.border = '1px dashed #94a3b8';
+                    feedbackEl.style.color = '#475569';
+                    feedbackEl.innerHTML = "⚪ Questão não respondida pelo aluno.";
+                }
+            });
+
+            const tituloOriginal = document.title;
+            const nomeArquivoSafe = nomeAluno.replace(/[^a-zA-Z0-9]/g, "_");
+            document.title = `Atividade_Absorcao_Rateios_CEST_${nomeArquivoSafe}`;
+            
+            window.print();
+
+            setTimeout(() => {
+                document.title = tituloOriginal;
+            }, 1000);
+        }
+
+        window.onload = () => {
+            gerarQuestoes();
+        };
+    </script>
+</body>
+</html>
